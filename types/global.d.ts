@@ -2,9 +2,9 @@ declare global {
   interface IAuthUser {
     uid: number
     pv: number
-    /** 过期时间 */
+    /** Date d'expiration */
     exp?: number
-    /** 签发时间 */
+    /** Date d'émission */
     iat?: number
     roles?: string[]
   }

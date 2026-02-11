@@ -2,20 +2,20 @@ import { exec } from 'node:child_process'
 
 import { CronJob } from 'cron'
 
-/** 此文件仅供演示时使用 */
+/** Ce fichier est uniquement destiné à la démonstration */
 
-const runMigrationGenerate = async function () {
+async function runMigrationGenerate() {
   exec('npm run migration:revert && npm run migration:run', (error, stdout, stderr) => {
     if (!error)
-      console.log('操作成功', error)
+      console.log('Opération réussie', error)
 
     else
-      console.log('操作失败', error)
+      console.log('Opération échouée', error)
   })
 }
 
 const job = CronJob.from({
-  /** 每天凌晨 4.30 恢复初始数据 */
+  /** Restaurer les données initiales chaque jour à 4h30 du matin */
   cronTime: '30 4 * * *',
   timeZone: 'Asia/Shanghai',
   start: true,

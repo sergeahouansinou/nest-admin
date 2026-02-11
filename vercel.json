@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build",
-  // 由于项目中使用了路径别名，暂时无法简单的部署到 vercel: https://github.com/vercel/vercel/issues/2832
+  // En raison de l'utilisation d'alias de chemins dans le projet, le déploiement sur Vercel n'est pas simple pour le moment : https://github.com/vercel/vercel/issues/2832
   "builds": [
     {
       "src": "src/main.ts",

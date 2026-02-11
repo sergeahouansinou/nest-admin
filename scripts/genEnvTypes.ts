@@ -29,9 +29,9 @@ declare global {
 export {};
   `, (err) => {
   if (err)
-    console.log('生成 env.d.ts 文件失败')
+    console.log('Échec de la génération du fichier env.d.ts')
   else
-    console.log('成功生成 env.d.ts 文件')
+    console.log('Fichier env.d.ts généré avec succès')
 })
 
 //   console.log('envObj:', envObj)
