@@ -15,7 +15,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator'
-import { CronExpressionParser } from 'cron-parser';
+import { CronExpressionParser } from 'cron-parser'
 import { isEmpty } from 'lodash'
 
 import { PagerDto } from '~/common/dto/pager.dto'
@@ -23,7 +23,7 @@ import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
 import { TaskEntity } from './task.entity'
 
-// cron 表达式验证，bull lib下引用了cron-parser
+// Validation d'expression cron, référencée depuis cron-parser dans la bibliothèque bull
 @ValidatorConstraint({ name: 'isCronExpression', async: false })
 export class IsCronExpression implements ValidatorConstraintInterface {
   validate(value: string, _args: ValidationArguments) {
@@ -45,60 +45,60 @@ export class IsCronExpression implements ValidatorConstraintInterface {
 }
 
 export class TaskDto {
-  @ApiProperty({ description: '任务名称' })
-  @IsUnique({ entity: TaskEntity, message: '任务名称已存在' })
+  @ApiProperty({ description: 'Nom de la tâche' })
+  @IsUnique({ entity: TaskEntity, message: 'Le nom de la tâche existe déjà' })
   @IsString()
   @MinLength(2)
   @MaxLength(50)
   name: string
 
-  @ApiProperty({ description: '调用的服务' })
+  @ApiProperty({ description: 'Service appelé' })
   @IsString()
   @MinLength(1)
   service: string
 
-  @ApiProperty({ description: '任务类别：cron | interval' })
+  @ApiProperty({ description: 'Type de tâche : cron | interval' })
   @IsIn([0, 1])
   type: number
 
-  @ApiProperty({ description: '任务状态' })
+  @ApiProperty({ description: 'Statut de la tâche' })
   @IsIn([0, 1])
   status: number
 
-  @ApiPropertyOptional({ description: '开始时间', type: Date })
+  @ApiPropertyOptional({ description: 'Heure de début', type: Date })
   @IsDateString()
   @ValidateIf(o => !isEmpty(o.startTime))
   startTime: string
 
-  @ApiPropertyOptional({ description: '结束时间', type: Date })
+  @ApiPropertyOptional({ description: 'Heure de fin', type: Date })
   @IsDateString()
   @ValidateIf(o => !isEmpty(o.endTime))
   endTime: string
 
   @ApiPropertyOptional({
-    description: '限制执行次数，负数则无限制',
+    description: 'Limite du nombre d\'exécutions, négatif pour illimité',
   })
   @IsOptional()
   @IsInt()
   limit?: number = -1
 
-  @ApiProperty({ description: 'cron表达式' })
+  @ApiProperty({ description: 'Expression cron' })
   @Validate(IsCronExpression)
   @ValidateIf(o => o.type === 0)
   cron: string
 
-  @ApiProperty({ description: '执行间隔，毫秒单位' })
+  @ApiProperty({ description: 'Intervalle d\'exécution, en millisecondes' })
   @IsInt()
   @Min(100)
   @ValidateIf(o => o.type === 1)
   every?: number
 
-  @ApiPropertyOptional({ description: '执行参数' })
+  @ApiPropertyOptional({ description: 'Paramètres d\'exécution' })
   @IsOptional()
   @IsString()
   data?: string
 
-  @ApiPropertyOptional({ description: '任务备注' })
+  @ApiPropertyOptional({ description: 'Remarque de la tâche' })
   @IsOptional()
   @IsString()
   remark?: string

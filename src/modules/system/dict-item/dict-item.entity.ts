@@ -12,21 +12,21 @@ export class DictItemEntity extends CompleteEntity {
   type: DictTypeEntity
 
   @Column({ type: 'varchar', length: 50 })
-  @ApiProperty({ description: '字典项键名' })
+  @ApiProperty({ description: 'Nom de clé de l\'élément de dictionnaire' })
   label: string
 
   @Column({ type: 'varchar', length: 50 })
-  @ApiProperty({ description: '字典项值' })
+  @ApiProperty({ description: 'Valeur de l\'élément de dictionnaire' })
   value: string
 
-  @Column({ nullable: true, comment: '字典项排序' })
+  @Column({ nullable: true, comment: 'Ordre de tri de l\'élément de dictionnaire' })
   orderNo: number
 
   @Column({ type: 'tinyint', default: 1 })
-  @ApiProperty({ description: ' 状态' })
+  @ApiProperty({ description: ' Statut' })
   status: number
 
   @Column({ type: 'varchar', nullable: true })
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: 'Remarque' })
   remark: string
 }

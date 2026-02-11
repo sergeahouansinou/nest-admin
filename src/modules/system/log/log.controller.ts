@@ -25,7 +25,7 @@ export const permissions = definePermission('system:log', {
 } as const)
 
 @ApiSecurityAuth()
-@ApiTags('System - 日志模块')
+@ApiTags('System - Module des journaux')
 @Controller('log')
 export class LogController {
   constructor(
@@ -35,7 +35,7 @@ export class LogController {
   ) {}
 
   @Get('login/list')
-  @ApiOperation({ summary: '查询登录日志列表' })
+  @ApiOperation({ summary: 'Consulter la liste des journaux de connexion' })
   @ApiResult({ type: [LoginLogInfo], isPage: true })
   @Perm(permissions.TaskList)
   async loginLogPage(
@@ -45,7 +45,7 @@ export class LogController {
   }
 
   @Get('task/list')
-  @ApiOperation({ summary: '查询任务日志列表' })
+  @ApiOperation({ summary: 'Consulter la liste des journaux de tâches' })
   @ApiResult({ type: [TaskLogEntity], isPage: true })
   @Perm(permissions.LogList)
   async taskList(@Query() dto: TaskLogQueryDto) {
@@ -53,7 +53,7 @@ export class LogController {
   }
 
   @Get('captcha/list')
-  @ApiOperation({ summary: '查询验证码日志列表' })
+  @ApiOperation({ summary: 'Consulter la liste des journaux de codes de vérification' })
   @ApiResult({ type: [CaptchaLogEntity], isPage: true })
   @Perm(permissions.CaptchaList)
   async captchaList(

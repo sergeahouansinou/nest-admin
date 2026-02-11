@@ -34,7 +34,7 @@ export const permissions = definePermission('system:role', {
   DELETE: 'delete',
 } as const)
 
-@ApiTags('System - 角色模块')
+@ApiTags('System - Module des rôles')
 @ApiSecurityAuth()
 @Controller('roles')
 export class RoleController {
@@ -46,7 +46,7 @@ export class RoleController {
   ) {}
 
   @Get()
-  @ApiOperation({ summary: '获取角色列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des rôles' })
   @ApiResult({ type: [RoleEntity], isPage: true })
   @Perm(permissions.LIST)
   async list(@Query() dto: RoleQueryDto) {
@@ -54,7 +54,7 @@ export class RoleController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '获取角色信息' })
+  @ApiOperation({ summary: 'Obtenir les informations du rôle' })
   @ApiResult({ type: RoleInfo })
   @Perm(permissions.READ)
   async info(@IdParam() id: number) {
@@ -62,14 +62,14 @@ export class RoleController {
   }
 
   @Post()
-  @ApiOperation({ summary: '新增角色' })
+  @ApiOperation({ summary: 'Ajouter un rôle' })
   @Perm(permissions.CREATE)
   async create(@Body() dto: RoleDto): Promise<void> {
     await this.roleService.create(dto)
   }
 
   @Put(':id')
-  @ApiOperation({ summary: '更新角色' })
+  @ApiOperation({ summary: 'Mettre à jour le rôle' })
   @Perm(permissions.UPDATE)
   async update(@IdParam() id: number, @Body(UpdaterPipe)dto: RoleUpdateDto): Promise<void> {
     await this.roleService.update(id, dto)
@@ -78,11 +78,11 @@ export class RoleController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '删除角色' })
+  @ApiOperation({ summary: 'Supprimer le rôle' })
   @Perm(permissions.DELETE)
   async delete(@IdParam() id: number): Promise<void> {
     if (await this.roleService.checkUserByRoleId(id))
-      throw new BadRequestException('该角色存在关联用户，无法删除')
+      throw new BadRequestException('Ce rôle a des utilisateurs associés et ne peut pas être supprimé')
 
     await this.roleService.delete(id)
     await this.menuService.refreshOnlineUserPerms(false)

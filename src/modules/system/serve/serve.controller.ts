@@ -11,7 +11,7 @@ import { AllowAnon } from '~/modules/auth/decorators/allow-anon.decorator'
 import { ServeStatInfo } from './serve.model'
 import { ServeService } from './serve.service'
 
-@ApiTags('System - 服务监控')
+@ApiTags('System - Surveillance du serveur')
 @ApiSecurityAuth()
 @ApiExtraModels(ServeStatInfo)
 @Controller('serve')
@@ -22,7 +22,7 @@ export class ServeController {
   constructor(private serveService: ServeService) {}
 
   @Get('stat')
-  @ApiOperation({ summary: '获取服务器运行信息' })
+  @ApiOperation({ summary: 'Obtenir les informations d\'exécution du serveur' })
   @ApiResult({ type: ServeStatInfo })
   @AllowAnon()
   async stat(): Promise<ServeStatInfo> {

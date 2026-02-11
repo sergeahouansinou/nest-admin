@@ -6,7 +6,7 @@ import { Disk, ServeStatInfo } from './serve.model'
 @Injectable()
 export class ServeService {
   /**
-   * 获取服务器信息
+   * Obtenir les informations du serveur
    */
   async getServeStat(): Promise<ServeStatInfo> {
     const [versions, osinfo, cpuinfo, currentLoadinfo, meminfo] = (
@@ -19,7 +19,7 @@ export class ServeService {
       ])
     ).map((p: any) => p.value)
 
-    // 计算总空间
+    // Calculer l'espace total
     const diskListInfo = await si.fsSize()
     const diskinfo = new Disk()
     diskinfo.size = 0

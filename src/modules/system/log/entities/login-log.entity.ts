@@ -12,15 +12,15 @@ export class LoginLogEntity extends CommonEntity {
   ip: string
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '地址' })
+  @ApiProperty({ description: 'Adresse' })
   address: string
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '登录方式' })
+  @ApiProperty({ description: 'Méthode de connexion' })
   provider: string
 
   @Column({ length: 500, nullable: true })
-  @ApiProperty({ description: '浏览器ua' })
+  @ApiProperty({ description: 'User-Agent du navigateur' })
   ua: string
 
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })

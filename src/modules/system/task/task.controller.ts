@@ -23,14 +23,14 @@ export const permissions = definePermission('system:task', {
   STOP: 'stop',
 } as const)
 
-@ApiTags('System - 任务调度模块')
+@ApiTags('System - Module de planification des tâches')
 @ApiSecurityAuth()
 @Controller('tasks')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get()
-  @ApiOperation({ summary: '获取任务列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des tâches' })
   @ApiResult({ type: [TaskEntity], isPage: true })
   @Perm(permissions.LIST)
   async list(@Query() dto: TaskQueryDto): Promise<Pagination<TaskEntity>> {
@@ -38,7 +38,7 @@ export class TaskController {
   }
 
   @Post()
-  @ApiOperation({ summary: '添加任务' })
+  @ApiOperation({ summary: 'Ajouter une tâche' })
   @Perm(permissions.CREATE)
   async create(@Body() dto: TaskDto): Promise<void> {
     const serviceCall = dto.service.split('.')
@@ -47,7 +47,7 @@ export class TaskController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: '更新任务' })
+  @ApiOperation({ summary: 'Mettre à jour la tâche' })
   @Perm(permissions.UPDATE)
   async update(@IdParam() id: number, @Body() dto: TaskUpdateDto): Promise<void> {
     const serviceCall = dto.service.split('.')
@@ -56,7 +56,7 @@ export class TaskController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '查询任务详细信息' })
+  @ApiOperation({ summary: 'Consulter les détails de la tâche' })
   @ApiResult({ type: TaskEntity })
   @Perm(permissions.READ)
   async info(@IdParam() id: number): Promise<TaskEntity> {
@@ -64,7 +64,7 @@ export class TaskController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '删除任务' })
+  @ApiOperation({ summary: 'Supprimer la tâche' })
   @Perm(permissions.DELETE)
   async delete(@IdParam() id: number): Promise<void> {
     const task = await this.taskService.info(id)
@@ -72,7 +72,7 @@ export class TaskController {
   }
 
   @Put(':id/once')
-  @ApiOperation({ summary: '手动执行一次任务' })
+  @ApiOperation({ summary: 'Exécuter manuellement une tâche une fois' })
   @Perm(permissions.ONCE)
   async once(@IdParam() id: number): Promise<void> {
     const task = await this.taskService.info(id)
@@ -80,7 +80,7 @@ export class TaskController {
   }
 
   @Put(':id/stop')
-  @ApiOperation({ summary: '停止任务' })
+  @ApiOperation({ summary: 'Arrêter la tâche' })
   @Perm(permissions.STOP)
   async stop(@IdParam() id: number): Promise<void> {
     const task = await this.taskService.info(id)
@@ -88,7 +88,7 @@ export class TaskController {
   }
 
   @Put(':id/start')
-  @ApiOperation({ summary: '启动任务' })
+  @ApiOperation({ summary: 'Démarrer la tâche' })
   @Perm(permissions.START)
   async start(@IdParam() id: number): Promise<void> {
     const task = await this.taskService.info(id)

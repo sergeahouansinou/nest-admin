@@ -15,28 +15,28 @@ import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 import { RoleEntity } from './role.entity'
 
 export class RoleDto extends OperatorDto {
-  @ApiProperty({ description: '角色名称' })
+  @ApiProperty({ description: 'Nom du rôle' })
   @IsString()
-  @MinLength(2, { message: '角色名称长度不能小于2' })
+  @MinLength(2, { message: 'Le nom du rôle doit comporter au moins 2 caractères' })
   name: string
 
   @IsUnique({ entity: RoleEntity })
-  @ApiProperty({ description: '角色标识' })
+  @ApiProperty({ description: 'Identifiant du rôle' })
   @IsString()
-  @Matches(/^[a-z0-9]+$/i, { message: '角色值只能包含字母和数字' })
-  @MinLength(2, { message: '角色值长度不能小于2' })
+  @Matches(/^[a-z0-9]+$/i, { message: 'La valeur du rôle ne peut contenir que des lettres et des chiffres' })
+  @MinLength(2, { message: 'La valeur du rôle doit comporter au moins 2 caractères' })
   value: string
 
-  @ApiProperty({ description: '角色备注' })
+  @ApiProperty({ description: 'Remarque du rôle' })
   @IsString()
   @IsOptional()
   remark?: string
 
-  @ApiProperty({ description: '状态' })
+  @ApiProperty({ description: 'Statut' })
   @IsIn([0, 1])
   status: number
 
-  @ApiProperty({ description: '关联菜单、权限编号' })
+  @ApiProperty({ description: 'Identifiants des menus et permissions associés' })
   @IsOptional()
   @IsArray()
   menuIds?: number[]
@@ -45,11 +45,11 @@ export class RoleDto extends OperatorDto {
 export class RoleUpdateDto extends PartialType(RoleDto) {}
 
 export class RoleQueryDto extends IntersectionType(PagerDto<RoleDto>, PartialType(RoleDto)) {
-  @ApiProperty({ description: '角色名称', required: false })
+  @ApiProperty({ description: 'Nom du rôle', required: false })
   @IsString()
   name?: string
 
-  @ApiProperty({ description: '角色值', required: false })
+  @ApiProperty({ description: 'Valeur du rôle', required: false })
   @IsString()
   value: string
 }

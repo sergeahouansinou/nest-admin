@@ -23,7 +23,7 @@ export class RoleService {
   ) {}
 
   /**
-   * 列举所有角色：除去超级管理员
+   * Lister tous les rôles : sauf le super administrateur
    */
   async findAll({
     page,
@@ -33,7 +33,7 @@ export class RoleService {
   }
 
   /**
-   * 查询角色列表
+   * Rechercher la liste des rôles
    */
   async list({
     page,
@@ -59,7 +59,7 @@ export class RoleService {
   }
 
   /**
-   * 根据角色获取角色信息
+   * Obtenir les informations du rôle par son identifiant
    */
   async info(id: number) {
     const info = await this.roleRepository
@@ -79,12 +79,12 @@ export class RoleService {
 
   async delete(id: number): Promise<void> {
     if (id === ROOT_ROLE_ID)
-      throw new Error('不能删除超级管理员')
+      throw new Error('Impossible de supprimer le super administrateur')
     await this.roleRepository.delete(id)
   }
 
   /**
-   * 增加角色
+   * Ajouter un rôle
    */
   async create({ menuIds, ...data }: RoleDto): Promise<{ roleId: number }> {
     const role = await this.roleRepository.save({
@@ -98,8 +98,8 @@ export class RoleService {
   }
 
   /**
-   * 更新角色信息
-   * 如果传入的menuIds为空，则清空sys_role_menus表中存有的关联数据，参考新增
+   * Mettre à jour les informations du rôle
+   * Si les menuIds fournis sont vides, les données associées dans la table sys_role_menus seront effacées, voir l'ajout
    */
   async update(id, { menuIds, ...data }: RoleUpdateDto): Promise<void> {
     await this.roleRepository.update(id, data)
@@ -113,7 +113,7 @@ export class RoleService {
   }
 
   /**
-   * 根据用户id查找角色信息
+   * Rechercher les informations de rôle par identifiant utilisateur
    */
   async getRoleIdsByUser(id: number): Promise<number[]> {
     const roles = await this.roleRepository.find({
@@ -156,7 +156,7 @@ export class RoleService {
   }
 
   /**
-   * 根据角色ID查找是否有关联用户
+   * Vérifier s'il existe des utilisateurs associés par identifiant de rôle
    */
   async checkUserByRoleId(id: number): Promise<boolean> {
     return this.roleRepository.exist({

@@ -74,7 +74,7 @@ export class DeptService {
   }
 
   /**
-   * 移动排序
+   * Tri par déplacement
    */
   async move(depts: MoveDept[]): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
@@ -83,14 +83,14 @@ export class DeptService {
   }
 
   /**
-   * 根据部门查询关联的用户数量
+   * Compter le nombre d'utilisateurs associés à un département
    */
   async countUserByDeptId(id: number): Promise<number> {
     return this.userRepository.countBy({ dept: { id } })
   }
 
   /**
-   * 查找当前部门下的子部门数量
+   * Compter le nombre de sous-départements du département actuel
    */
   async countChildDept(id: number): Promise<number> {
     const item = await this.deptRepository.findOneBy({ id })
@@ -98,7 +98,7 @@ export class DeptService {
   }
 
   /**
-   * 获取部门列表树结构
+   * Obtenir l'arborescence des départements
    */
   async getDeptTree(
     uid: number,

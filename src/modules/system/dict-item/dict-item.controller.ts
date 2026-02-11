@@ -21,14 +21,14 @@ export const permissions = definePermission('system:dict-item', {
   DELETE: 'delete',
 } as const)
 
-@ApiTags('System - 字典项模块')
+@ApiTags('System - Module des éléments de dictionnaire')
 @ApiSecurityAuth()
 @Controller('dict-item')
 export class DictItemController {
   constructor(private dictItemService: DictItemService) {}
 
   @Get()
-  @ApiOperation({ summary: '获取字典项列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des éléments de dictionnaire' })
   @ApiResult({ type: [DictItemEntity], isPage: true })
   @Perm(permissions.LIST)
   async list(@Query() dto: DictItemQueryDto): Promise<Pagination<DictItemEntity>> {
@@ -36,14 +36,14 @@ export class DictItemController {
   }
 
   @Post()
-  @ApiOperation({ summary: '新增字典项' })
+  @ApiOperation({ summary: 'Ajouter un élément de dictionnaire' })
   @Perm(permissions.CREATE)
   async create(@Body() dto: DictItemDto, @AuthUser() user: IAuthUser): Promise<void> {
     await this.dictItemService.create(dto)
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '查询字典项信息' })
+  @ApiOperation({ summary: 'Consulter les informations de l\'élément de dictionnaire' })
   @ApiResult({ type: DictItemEntity })
   @Perm(permissions.READ)
   async info(@IdParam() id: number): Promise<DictItemEntity> {
@@ -51,14 +51,14 @@ export class DictItemController {
   }
 
   @Post(':id')
-  @ApiOperation({ summary: '更新字典项' })
+  @ApiOperation({ summary: 'Mettre à jour l\'élément de dictionnaire' })
   @Perm(permissions.UPDATE)
   async update(@IdParam() id: number, @Body(UpdaterPipe) dto: DictItemDto): Promise<void> {
     await this.dictItemService.update(id, dto)
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '删除指定的字典项' })
+  @ApiOperation({ summary: 'Supprimer l\'élément de dictionnaire spécifié' })
   @Perm(permissions.DELETE)
   async delete(@IdParam() id: number): Promise<void> {
     await this.dictItemService.delete(id)

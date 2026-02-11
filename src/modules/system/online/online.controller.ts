@@ -16,7 +16,7 @@ import { OnlineService } from './online.service'
 
 export const permissions = definePermission('system:online', ['list', 'kick'] as const)
 
-@ApiTags('System - 在线用户模块')
+@ApiTags('System - Module des utilisateurs en ligne')
 @ApiSecurityAuth()
 @ApiExtraModels(OnlineUserInfo)
 @Controller('online')
@@ -24,7 +24,7 @@ export class OnlineController {
   constructor(private onlineService: OnlineService) {}
 
   @Get('list')
-  @ApiOperation({ summary: '查询当前在线用户' })
+  @ApiOperation({ summary: 'Consulter les utilisateurs actuellement en ligne' })
   @ApiResult({ type: [OnlineUserInfo] })
   @Perm(permissions.LIST)
   async list(@Req() req: FastifyRequest): Promise<OnlineUserInfo[]> {
@@ -32,7 +32,7 @@ export class OnlineController {
   }
 
   @Post('kick')
-  @ApiOperation({ summary: '下线指定在线用户' })
+  @ApiOperation({ summary: 'Déconnecter un utilisateur en ligne spécifié' })
   @Perm(permissions.KICK)
   async kick(@Body() dto: KickDto, @AuthUser() user: IAuthUser): Promise<void> {
     await this.onlineService.kickUser(dto.tokenId, user)

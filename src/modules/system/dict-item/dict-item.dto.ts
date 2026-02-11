@@ -6,42 +6,42 @@ import { PagerDto } from '~/common/dto/pager.dto'
 import { DictItemEntity } from './dict-item.entity'
 
 export class DictItemDto extends PartialType(DictItemEntity) {
-  @ApiProperty({ description: '字典类型 ID' })
+  @ApiProperty({ description: 'ID du type de dictionnaire' })
   @IsInt()
   typeId: number
 
-  @ApiProperty({ description: '字典项键名' })
+  @ApiProperty({ description: 'Nom de clé de l\'élément de dictionnaire' })
   @IsString()
   @MinLength(1)
   label: string
 
-  @ApiProperty({ description: '字典项值' })
+  @ApiProperty({ description: 'Valeur de l\'élément de dictionnaire' })
   @IsString()
   @MinLength(1)
   value: string
 
-  @ApiProperty({ description: '状态' })
+  @ApiProperty({ description: 'Statut' })
   @IsOptional()
   @IsInt()
   status?: number
 
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: 'Remarque' })
   @IsOptional()
   @IsString()
   remark?: string
 }
 
 export class DictItemQueryDto extends PagerDto {
-  @ApiProperty({ description: '字典类型 ID', required: true })
+  @ApiProperty({ description: 'ID du type de dictionnaire', required: true })
   @IsInt()
   typeId: number
 
-  @ApiProperty({ description: '字典项键名' })
+  @ApiProperty({ description: 'Nom de clé de l\'élément de dictionnaire' })
   @IsString()
   @IsOptional()
   label?: string
 
-  @ApiProperty({ description: '字典项值' })
+  @ApiProperty({ description: 'Valeur de l\'élément de dictionnaire' })
   @IsString()
   @IsOptional()
   value?: string

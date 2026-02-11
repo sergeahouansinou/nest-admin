@@ -9,23 +9,23 @@ import { MenuEntity } from '../menu/menu.entity'
 @Entity({ name: 'sys_role' })
 export class RoleEntity extends CompleteEntity {
   @Column({ length: 50, unique: true })
-  @ApiProperty({ description: '角色名' })
+  @ApiProperty({ description: 'Nom du rôle' })
   name: string
 
-  @Column({ unique: true, comment: '角色标识' })
-  @ApiProperty({ description: '角色标识' })
+  @Column({ unique: true, comment: 'Identifiant du rôle' })
+  @ApiProperty({ description: 'Identifiant du rôle' })
   value: string
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '角色描述' })
+  @ApiProperty({ description: 'Description du rôle' })
   remark: string
 
   @Column({ type: 'tinyint', nullable: true, default: 1 })
-  @ApiProperty({ description: '状态：1启用，0禁用' })
+  @ApiProperty({ description: 'Statut : 1 activé, 0 désactivé' })
   status: number
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '是否默认用户' })
+  @ApiProperty({ description: 'Utilisateur par défaut' })
   default: boolean
 
   @ApiHideProperty()

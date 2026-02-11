@@ -30,7 +30,7 @@ export class MenuService {
   ) {}
 
   /**
-   * 获取所有菜单以及权限
+   * Obtenir tous les menus et permissions
    */
   async list({
     name,
@@ -55,7 +55,7 @@ export class MenuService {
       deleteEmptyChildren(menuList)
       return menuList
     }
-    // 如果生产树形结构为空，则返回原始菜单列表
+    // Si la structure arborescente générée est vide, retourner la liste des menus d'origine
     return menus
   }
 
@@ -70,7 +70,7 @@ export class MenuService {
   }
 
   /**
-   * 根据角色获取所有菜单
+   * Obtenir tous les menus par rôle
    */
   async getMenus(uid: number) {
     const roleIds = await this.roleService.getRoleIdsByUser(uid)
@@ -96,11 +96,11 @@ export class MenuService {
   }
 
   /**
-   * 检查菜单创建规则是否符合
+   * Vérifier si les règles de création de menu sont respectées
    */
   async check(dto: Partial<MenuDto>): Promise<void | never> {
     if (dto.type === 2 && !dto.parentId) {
-      // 无法直接创建权限，必须有parent
+      // Impossible de créer directement une permission, un parent est requis
       throw new BusinessException(ErrorEnum.PERMISSION_REQUIRES_PARENT)
     }
     if (dto.type === 1 && dto.parentId) {
@@ -109,7 +109,7 @@ export class MenuService {
         throw new BusinessException(ErrorEnum.PARENT_MENU_NOT_FOUND)
 
       if (parent && parent.type === 1) {
-        // 当前新增为菜单但父节点也为菜单时为非法操作
+        // Opération illégale : le nouvel élément est un menu mais le nœud parent est aussi un menu
         throw new BusinessException(
           ErrorEnum.ILLEGAL_OPERATION_DIRECTORY_PARENT,
         )
@@ -118,7 +118,7 @@ export class MenuService {
   }
 
   /**
-   * 查找当前菜单下的子菜单，目录以及菜单
+   * Rechercher les sous-menus du menu actuel, répertoires et menus
    */
   async findChildMenus(mid: number): Promise<any> {
     const allMenus: any = []
@@ -129,7 +129,7 @@ export class MenuService {
     // const childMenus: any = [];
     for (const menu of menus) {
       if (menu.type !== 2) {
-        // 子目录下是菜单或目录，继续往下级查找
+        // Le sous-répertoire contient un menu ou un répertoire, continuer la recherche au niveau inférieur
         const c = await this.findChildMenus(menu.id)
         allMenus.push(c)
       }
@@ -139,7 +139,7 @@ export class MenuService {
   }
 
   /**
-   * 获取某个菜单的信息
+   * Obtenir les informations d'un menu
    * @param mid menu id
    */
   async getMenuItemInfo(mid: number): Promise<MenuEntity> {
@@ -148,7 +148,7 @@ export class MenuService {
   }
 
   /**
-   * 获取某个菜单以及关联的父菜单的信息
+   * Obtenir les informations d'un menu et de son menu parent associé
    */
   async getMenuItemAndParentInfo(mid: number) {
     const menu = await this.menuRepository.findOneBy({ id: mid })
@@ -160,7 +160,7 @@ export class MenuService {
   }
 
   /**
-   * 查找节点路由是否存在
+   * Vérifier si la route du nœud existe
    */
   async findRouterExist(path: string): Promise<boolean> {
     const menus = await this.menuRepository.findOneBy({ path })
@@ -168,7 +168,7 @@ export class MenuService {
   }
 
   /**
-   * 获取当前用户的所有权限
+   * Obtenir toutes les permissions de l'utilisateur actuel
    */
   async getPermissions(uid: number): Promise<string[]> {
     const roleIds = await this.roleService.getRoleIdsByUser(uid)
@@ -203,20 +203,20 @@ export class MenuService {
   }
 
   /**
-   * 删除多项菜单
+   * Supprimer plusieurs éléments de menu
    */
   async deleteMenuItem(mids: number[]): Promise<void> {
     await this.menuRepository.delete(mids)
   }
 
   /**
-   * 刷新指定用户ID的权限
+   * Rafraîchir les permissions d'un utilisateur spécifique par ID
    */
   async refreshPerms(uid: number): Promise<void> {
     const perms = await this.getPermissions(uid)
     const online = await this.redis.get(genAuthTokenKey(uid))
     if (online) {
-      // 判断是否在线
+      // Vérifier si l'utilisateur est en ligne
       await this.redis.set(genAuthPermKey(uid), JSON.stringify(perms))
 
       this.sseService.noticeClientToUpdateMenusByUserIds([uid])
@@ -224,7 +224,7 @@ export class MenuService {
   }
 
   /**
-   * 刷新所有在线用户的权限
+   * Rafraîchir les permissions de tous les utilisateurs en ligne
    */
   async refreshOnlineUserPerms(isNoticeUser = true): Promise<void> {
     const onlineUserIds: string[] = await this.redis.keys(genAuthTokenKey('*'))
@@ -245,7 +245,7 @@ export class MenuService {
   }
 
   /**
-   * 根据菜单ID查找是否有关联角色
+   * Vérifier s'il existe des rôles associés par identifiant de menu
    */
   async checkRoleByMenuId(id: number): Promise<boolean> {
     return !!(await this.menuRepository.findOne({

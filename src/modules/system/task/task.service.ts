@@ -52,18 +52,18 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 初始化任务，系统启动前调用
+   * Initialiser les tâches, appelé avant le démarrage du système
    */
   async initTask(): Promise<void> {
     const initKey = `${SYS_TASK_QUEUE_PREFIX}:init`
-    // 防止重复初始化
+    // Empêcher la réinitialisation
     const result = await this.redis
       .multi()
       .setnx(initKey, new Date().getTime())
       .expire(initKey, 60 * 30)
       .exec()
     if (result[0][1] === 0) {
-      // 存在锁则直接跳过防止重复初始化
+      // Un verrou existe, ignorer pour éviter la réinitialisation
       this.logger.log('Init task is lock', TaskService.name)
       return
     }
@@ -79,13 +79,13 @@ export class TaskService implements OnModuleInit {
       j.remove()
     })
 
-    // 查找所有需要运行的任务
+    // Rechercher toutes les tâches à exécuter
     const tasks = await this.taskRepository.findBy({ status: 1 })
     if (tasks && tasks.length > 0) {
       for (const t of tasks)
         await this.start(t)
     }
-    // 启动后释放锁
+    // Libérer le verrou après le démarrage
     await this.redis.del(initKey)
   }
 
@@ -137,7 +137,7 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 手动执行一次
+   * Exécuter manuellement une fois
    */
   async once(task: TaskEntity): Promise<void | never> {
     if (task) {
@@ -170,17 +170,17 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 启动任务
+   * Démarrer la tâche
    */
   async start(task: TaskEntity): Promise<void> {
     if (!task)
       throw new BadRequestException('Task is Empty')
 
-    // 先停掉之前存在的任务
+    // Arrêter d'abord la tâche existante
     await this.stop(task)
     let repeat: any
     if (task.type === 1) {
-      // 间隔 Repeat every millis (cron setting cannot be used together with this setting.)
+      // Intervalle Repeat every millis (cron setting cannot be used together with this setting.)
       repeat = {
         every: task.every,
       }
@@ -211,7 +211,7 @@ export class TaskService implements OnModuleInit {
       })
     }
     else {
-      // update status to 0，标识暂停任务，因为启动失败
+      // update status to 0, indique que la tâche est en pause car le démarrage a échoué
       await job?.remove()
       await this.taskRepository.update(task.id, {
         status: TaskStatus.Disabled,
@@ -221,7 +221,7 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 停止任务
+   * Arrêter la tâche
    */
   async stop(task: TaskEntity): Promise<void> {
     if (!task)
@@ -248,7 +248,7 @@ export class TaskService implements OnModuleInit {
         await j.remove()
       })
 
-    // 在队列中删除当前任务
+    // Supprimer la tâche actuelle de la file d'attente
     await this.taskQueue.removeRepeatable(JSON.parse(task.jobOpts))
 
     await this.taskRepository.update(task.id, { status: TaskStatus.Disabled })
@@ -260,7 +260,7 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 查看队列中任务是否存在
+   * Vérifier si la tâche existe dans la file d'attente
    */
   async existJob(jobId: string): Promise<boolean> {
     // https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueremoverepeatablebykey
@@ -272,16 +272,16 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 更新是否已经完成，完成则移除该任务并修改状态
+   * Mettre à jour le statut de complétion, supprimer la tâche et modifier le statut si terminée
    */
   async updateTaskCompleteStatus(tid: number): Promise<void> {
     const jobs = await this.taskQueue.getRepeatableJobs()
     const task = await this.taskRepository.findOneBy({ id: tid })
-    // 如果下次执行时间小于当前时间，则表示已经执行完成。
+    // Si la prochaine heure d'exécution est antérieure à l'heure actuelle, l'exécution est terminée.
     for (const job of jobs) {
       const currentTime = new Date().getTime()
       if (job.id === tid.toString() && job.next < currentTime) {
-        // 如果下次执行时间小于当前时间，则表示已经执行完成。
+        // Si la prochaine heure d'exécution est antérieure à l'heure actuelle, l'exécution est terminée.
         await this.stop(task)
         break
       }
@@ -289,7 +289,7 @@ export class TaskService implements OnModuleInit {
   }
 
   /**
-   * 检测service是否有注解定义
+   * Vérifier si le service a une annotation définie
    */
   async checkHasMissionMeta(
     nameOrInstance: string | unknown,
@@ -302,33 +302,33 @@ export class TaskService implements OnModuleInit {
       else
         service = nameOrInstance
 
-      // 所执行的任务不存在
+      // La tâche à exécuter n'existe pas
       if (!service || !(exec in service))
-        throw new NotFoundException('任务不存在')
+        throw new NotFoundException('La tâche n\'existe pas')
 
-      // 检测是否有Mission注解
+      // Vérifier si l'annotation Mission est présente
       const hasMission = this.reflector.get<boolean>(
         MISSION_DECORATOR_KEY,
         service.constructor,
       )
-      // 如果没有，则抛出错误
+      // Si absente, lever une erreur
       if (!hasMission)
         throw new BusinessException(ErrorEnum.INSECURE_MISSION)
     }
     catch (e) {
       if (e instanceof UnknownElementException) {
-        // 任务不存在
-        throw new NotFoundException('任务不存在')
+        // La tâche n'existe pas
+        throw new NotFoundException('La tâche n\'existe pas')
       }
       else {
-        // 其余错误则不处理，继续抛出
+        // Les autres erreurs ne sont pas traitées, continuer à lever l'exception
         throw e
       }
     }
   }
 
   /**
-   * 根据serviceName调用service，例如 LogService.clearReqLog
+   * Appeler un service par serviceName, par exemple LogService.clearReqLog
    */
   async callService(name: string, args: string): Promise<void> {
     if (name) {
@@ -340,17 +340,17 @@ export class TaskService implements OnModuleInit {
         strict: false,
       })
 
-      // 安全注解检查
+      // Vérification de l'annotation de sécurité
       await this.checkHasMissionMeta(service, methodName)
       if (isEmpty(args)) {
         await service[methodName]()
       }
       else {
-        // 参数安全判断
+        // Validation de sécurité des paramètres
         const parseArgs = this.safeParse(args)
 
         if (Array.isArray(parseArgs)) {
-          // 数组形式则自动扩展成方法参数回掉
+          // Si c'est un tableau, l'étendre automatiquement en paramètres de méthode
           await service[methodName](...parseArgs)
         }
         else {

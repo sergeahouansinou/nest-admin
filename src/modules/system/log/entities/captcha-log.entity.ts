@@ -6,18 +6,18 @@ import { CommonEntity } from '~/common/entity/common.entity'
 @Entity({ name: 'sys_captcha_log' })
 export class CaptchaLogEntity extends CommonEntity {
   @Column({ name: 'user_id', nullable: true })
-  @ApiProperty({ description: '用户ID' })
+  @ApiProperty({ description: 'ID utilisateur' })
   userId: number
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '账号' })
+  @ApiProperty({ description: 'Compte' })
   account: string
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '验证码' })
+  @ApiProperty({ description: 'Code de vérification' })
   code: string
 
   @Column({ nullable: true })
-  @ApiProperty({ description: '验证码提供方' })
+  @ApiProperty({ description: 'Fournisseur du code de vérification' })
   provider: 'sms' | 'email'
 }
