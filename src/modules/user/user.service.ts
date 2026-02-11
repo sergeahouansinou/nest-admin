@@ -65,7 +65,7 @@ export class UserService {
   }
 
   /**
-   * 获取用户信息
+   * Obtenir les informations utilisateur
    * @param uid user id
    */
   async getAccountInfo(uid: number): Promise<AccountInfo> {
@@ -84,7 +84,7 @@ export class UserService {
   }
 
   /**
-   * 更新个人信息
+   * Mettre à jour les informations personnelles
    */
   async updateAccountInfo(uid: number, info: AccountUpdateDto): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: uid })
@@ -101,7 +101,7 @@ export class UserService {
     }
 
     if (!info.avatar && info.qq) {
-      // 如果qq不等于原qq，则更新qq头像
+      // Si le QQ est différent du QQ original, mettre à jour l'avatar QQ
       if (info.qq !== user.qq)
         data.avatar = await this.qqService.getAvater(info.qq)
     }
@@ -110,7 +110,7 @@ export class UserService {
   }
 
   /**
-   * 更改密码
+   * Modifier le mot de passe
    */
   async updatePassword(uid: number, dto: PasswordUpdateDto): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: uid })
@@ -118,7 +118,7 @@ export class UserService {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND)
 
     const comparePassword = md5(`${dto.oldPassword}${user.psalt}`)
-    // 原密码不一致，不允许更改
+    // L'ancien mot de passe ne correspond pas, modification non autorisée
     if (user.password !== comparePassword)
       throw new BusinessException(ErrorEnum.PASSWORD_MISMATCH)
 
@@ -128,7 +128,7 @@ export class UserService {
   }
 
   /**
-   * 直接更改密码
+   * Modifier directement le mot de passe
    */
   async forceUpdatePassword(uid: number, password: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: uid })
@@ -139,7 +139,7 @@ export class UserService {
   }
 
   /**
-   * 增加系统用户，如果返回false则表示已存在该用户
+   * Ajouter un utilisateur système, retourne false si l'utilisateur existe déjà
    */
   async create({
     username,
@@ -181,7 +181,7 @@ export class UserService {
   }
 
   /**
-   * 更新用户信息
+   * Mettre à jour les informations utilisateur
    */
   async update(
     id: number,
@@ -218,15 +218,15 @@ export class UserService {
       }
 
       if (status === 0) {
-        // 禁用状态
+        // Statut désactivé
         await this.forbidden(id)
       }
     })
   }
 
   /**
-   * 查找用户信息
-   * @param id 用户id
+   * Rechercher les informations utilisateur
+   * @param id ID utilisateur
    */
   async info(id: number): Promise<UserEntity> {
     const user = await this.userRepository
@@ -243,18 +243,18 @@ export class UserService {
   }
 
   /**
-   * 根据ID列表删除用户
+   * Supprimer des utilisateurs par liste d'ID
    */
   async delete(userIds: number[]): Promise<void | never> {
     const rootUserId = await this.findRootUserId()
     if (userIds.includes(rootUserId))
-      throw new BadRequestException('不能删除root用户!')
+      throw new BadRequestException('Impossible de supprimer l\'utilisateur root !')
 
     await this.userRepository.delete(userIds)
   }
 
   /**
-   * 查找超管的用户ID
+   * Trouver l'ID de l'utilisateur super administrateur
    */
   async findRootUserId(): Promise<number> {
     const user = await this.userRepository.findOneBy({
@@ -264,7 +264,7 @@ export class UserService {
   }
 
   /**
-   * 查询用户列表
+   * Requêter la liste des utilisateurs
    */
   async list({
     page,
@@ -297,7 +297,7 @@ export class UserService {
   }
 
   /**
-   * 禁用用户
+   * Désactiver un utilisateur
    */
   async forbidden(uid: number, accessToken?: string): Promise<void> {
     await this.redis.del(genAuthPVKey(uid))
@@ -312,7 +312,7 @@ export class UserService {
   }
 
   /**
-   * 禁用多个用户
+   * Désactiver plusieurs utilisateurs
    */
   async multiForbidden(uids: number[]): Promise<void> {
     if (uids) {
@@ -331,7 +331,7 @@ export class UserService {
   }
 
   /**
-   * 升级用户版本密码
+   * Mettre à niveau la version du mot de passe utilisateur
    */
   async upgradePasswordV(id: number): Promise<void> {
     // admin:passwordVersion:${param.id}
@@ -341,7 +341,7 @@ export class UserService {
   }
 
   /**
-   * 判断用户名是否存在
+   * Vérifier si le nom d'utilisateur existe
    */
   async exist(username: string) {
     const user = await this.userRepository.findOneBy({ username })
@@ -352,7 +352,7 @@ export class UserService {
   }
 
   /**
-   * 注册
+   * Inscription
    */
   async register({ username, ...data }: RegisterDto): Promise<void> {
     const exists = await this.userRepository.findOneBy({

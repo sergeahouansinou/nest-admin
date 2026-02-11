@@ -38,13 +38,13 @@ export class NetDiskManageService {
   }
 
   /**
-   * 获取文件列表
-   * @param prefix 当前文件夹路径，搜索模式下会被忽略
-   * @param marker 下一页标识
+   * Obtenir la liste des fichiers
+   * @param prefix Chemin du dossier actuel, ignoré en mode recherche
+   * @param marker Identifiant de page suivante
    * @returns iFileListResult
    */
   async getFileList(prefix = '', marker = '', skey = ''): Promise<SFileList> {
-    // 是否需要搜索
+    // Faut-il effectuer une recherche
     const searching = !isEmpty(skey)
     return new Promise<SFileList>((resolve, reject) => {
       this.bucketManager.listPrefix(
@@ -61,10 +61,10 @@ export class NetDiskManageService {
             return
           }
           if (respInfo.statusCode === 200) {
-            // 如果这个nextMarker不为空，那么还有未列举完毕的文件列表，下次调用listPrefix的时候，
-            // 指定options里面的marker为这个值
+            // Si ce nextMarker n'est pas vide, il reste des fichiers non listés,
+            // spécifier ce marqueur dans les options lors du prochain appel à listPrefix
             const fileList: SFileInfo[] = []
-            // 处理目录，但只有非搜索模式下可用
+            // Traitement des répertoires, disponible uniquement en mode non-recherche
             if (!searching && !isEmpty(respBody.commonPrefixes)) {
               // dir
               for (const dirPath of respBody.commonPrefixes) {
@@ -86,7 +86,7 @@ export class NetDiskManageService {
             if (!isEmpty(respBody.items)) {
               // file
               for (const item of respBody.items) {
-                // 搜索模式下处理
+                // Traitement en mode recherche
                 if (searching) {
                   const pathList: string[] = item.key.split(NETDISK_DELIMITER)
                   // dir is empty stirng, file is key string
@@ -95,7 +95,7 @@ export class NetDiskManageService {
                     item.key.endsWith(NETDISK_DELIMITER)
                     && pathList[pathList.length - 1].includes(skey)
                   ) {
-                    // 结果是目录
+                    // Le résultat est un répertoire
                     const ditName = pathList.pop()
                     fileList.push({
                       id: generateRandomValue(10),
@@ -105,7 +105,7 @@ export class NetDiskManageService {
                     })
                   }
                   else if (name.includes(skey)) {
-                    // 文件
+                    // Fichier
                     fileList.push({
                       id: generateRandomValue(10),
                       name,
@@ -118,7 +118,7 @@ export class NetDiskManageService {
                   }
                 }
                 else {
-                  // 正常获取列表
+                  // Obtention normale de la liste
                   const fileKey = item.key.replace(prefix, '') as string
                   if (!isEmpty(fileKey)) {
                     fileList.push({
@@ -151,7 +151,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 获取文件信息
+   * Obtenir les informations du fichier
    */
   async getFileInfo(name: string, path: string): Promise<SFileInfoDetail> {
     return new Promise((resolve, reject) => {
@@ -204,7 +204,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 修改文件MimeType
+   * Modifier le MimeType du fichier
    */
   async changeFileHeaders(
     name: string,
@@ -237,13 +237,13 @@ export class NetDiskManageService {
   }
 
   /**
-   * 创建文件夹
-   * @returns true创建成功
+   * Créer un dossier
+   * @returns true en cas de succès
    */
   async createDir(dirName: string): Promise<void> {
     const safeDirName = dirName.endsWith('/') ? dirName : `${dirName}/`
     return new Promise((resolve, reject) => {
-      // 上传一个空文件以用于显示文件夹效果
+      // Téléverser un fichier vide pour créer l'effet de dossier
       const formUploader = new qiniu.form_up.FormUploader(this.config)
       const putExtra = new qiniu.form_up.PutExtra()
       formUploader.put(
@@ -272,13 +272,13 @@ export class NetDiskManageService {
   }
 
   /**
-   * 检查文件是否存在，同可检查目录
+   * Vérifier si un fichier existe, peut également vérifier les répertoires
    */
   async checkFileExist(filePath: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // fix path end must a /
 
-      // 检测文件夹是否存在
+      // Vérifier si le dossier existe
       this.bucketManager.stat(
         this.qiniuConfig.bucket,
         filePath,
@@ -288,11 +288,11 @@ export class NetDiskManageService {
             return
           }
           if (respInfo.statusCode === 200) {
-            // 文件夹存在
+            // Le dossier existe
             resolve(true)
           }
           else if (respInfo.statusCode === 612) {
-            // 文件夹不存在
+            // Le dossier n'existe pas
             resolve(false)
           }
           else {
@@ -308,7 +308,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 创建Upload Token, 默认过期时间一小时
+   * Créer un Upload Token, durée d'expiration par défaut d'une heure
    * @returns upload token
    */
   createUploadToken(endUser: string): string {
@@ -323,9 +323,9 @@ export class NetDiskManageService {
   }
 
   /**
-   * 重命名文件
-   * @param dir 文件路径
-   * @param name 文件名称
+   * Renommer un fichier
+   * @param dir Chemin du fichier
+   * @param name Nom du fichier
    */
   async renameFile(dir: string, name: string, toName: string): Promise<void> {
     const fileName = `${dir}${name}`
@@ -362,7 +362,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 移动文件
+   * Déplacer un fichier
    */
   async moveFile(dir: string, toDir: string, name: string): Promise<void> {
     const fileName = `${dir}${name}`
@@ -399,11 +399,11 @@ export class NetDiskManageService {
   }
 
   /**
-   * 复制文件
+   * Copier un fichier
    */
   async copyFile(dir: string, toDir: string, name: string): Promise<void> {
     const fileName = `${dir}${name}`
-    // 拼接文件名
+    // Construire le nom du fichier
     const ext = extname(name)
     const bn = basename(name, ext)
     const toFileName = `${toDir}${bn}${NETDISK_COPY_SUFFIX}${ext}`
@@ -439,7 +439,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 重命名文件夹
+   * Renommer un dossier
    */
   async renameDir(path: string, name: string, toName: string): Promise<void> {
     const dirName = `${path}${name}`
@@ -452,7 +452,7 @@ export class NetDiskManageService {
     const bucketName = this.qiniuConfig.bucket
     while (hasFile) {
       await new Promise<void>((resolve, reject) => {
-        // 列举当前目录下的所有文件
+        // Lister tous les fichiers du répertoire actuel
         this.bucketManager.listPrefix(
           this.qiniuConfig.bucket,
           {
@@ -516,9 +516,9 @@ export class NetDiskManageService {
   }
 
   /**
-   * 获取七牛下载的文件url链接
-   * @param key 文件路径
-   * @returns 连接
+   * Obtenir le lien URL de téléchargement Qiniu
+   * @param key Chemin du fichier
+   * @returns Lien
    */
   getDownloadLink(key: string): string {
     if (this.qiniuConfig.access === 'public') {
@@ -535,9 +535,9 @@ export class NetDiskManageService {
   }
 
   /**
-   * 删除文件
-   * @param dir 删除的文件夹目录
-   * @param name 文件名
+   * Supprimer un fichier
+   * @param dir Répertoire du fichier à supprimer
+   * @param name Nom du fichier
    */
   async deleteFile(dir: string, name: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -565,9 +565,9 @@ export class NetDiskManageService {
   }
 
   /**
-   * 删除文件夹
-   * @param fileList 需要操作的文件或文件夹
-   * @param dir 文件目录名称
+   * Supprimer un dossier
+   * @param fileList Fichiers ou dossiers à traiter
+   * @param dir Nom du répertoire des fichiers
    */
   async deleteMultiFileOrDir(
     fileList: FileOpItem[],
@@ -575,7 +575,7 @@ export class NetDiskManageService {
   ): Promise<void> {
     const files = fileList.filter(item => item.type === 'file')
     if (files.length > 0) {
-      // 批处理文件
+      // Traitement par lots des fichiers
       const copyOperations = files.map((item) => {
         const fileName = `${dir}${item.name}`
         return qiniu.rs.deleteOp(this.qiniuConfig.bucket, fileName)
@@ -590,7 +590,7 @@ export class NetDiskManageService {
             resolve()
           }
           else if (respInfo.statusCode === 298) {
-            reject(new Error('操作异常，但部分文件夹删除成功'))
+            reject(new Error('Opération anormale, mais certains dossiers ont été supprimés avec succès'))
           }
           else {
             reject(
@@ -602,17 +602,17 @@ export class NetDiskManageService {
         })
       })
     }
-    // 处理文件夹
+    // Traitement des dossiers
     const dirs = fileList.filter(item => item.type === 'dir')
     if (dirs.length > 0) {
-      // 处理文件夹的复制
+      // Traitement de la copie des dossiers
       for (let i = 0; i < dirs.length; i++) {
         const dirName = `${dir}${dirs[i].name}/`
         let hasFile = true
         let marker = ''
         while (hasFile) {
           await new Promise<void>((resolve, reject) => {
-            // 列举当前目录下的所有文件
+            // Lister tous les fichiers du répertoire actuel
             this.bucketManager.listPrefix(
               this.qiniuConfig.bucket,
               {
@@ -671,7 +671,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 复制文件，含文件夹
+   * Copier des fichiers, y compris les dossiers
    */
   async copyMultiFileOrDir(
     fileList: FileOpItem[],
@@ -683,10 +683,10 @@ export class NetDiskManageService {
       force: true,
     }
     if (files.length > 0) {
-      // 批处理文件
+      // Traitement par lots des fichiers
       const copyOperations = files.map((item) => {
         const fileName = `${dir}${item.name}`
-        // 拼接文件名
+        // Construire le nom du fichier
         const ext = extname(item.name)
         const bn = basename(item.name, ext)
         const toFileName = `${toDir}${bn}${NETDISK_COPY_SUFFIX}${ext}`
@@ -708,7 +708,7 @@ export class NetDiskManageService {
             resolve()
           }
           else if (respInfo.statusCode === 298) {
-            reject(new Error('操作异常，但部分文件夹删除成功'))
+            reject(new Error('Opération anormale, mais certains dossiers ont été supprimés avec succès'))
           }
           else {
             reject(
@@ -720,10 +720,10 @@ export class NetDiskManageService {
         })
       })
     }
-    // 处理文件夹
+    // Traitement des dossiers
     const dirs = fileList.filter(item => item.type === 'dir')
     if (dirs.length > 0) {
-      // 处理文件夹的复制
+      // Traitement de la copie des dossiers
       for (let i = 0; i < dirs.length; i++) {
         const dirName = `${dir}${dirs[i].name}/`
         const copyDirName = `${toDir}${dirs[i].name}${NETDISK_COPY_SUFFIX}/`
@@ -731,7 +731,7 @@ export class NetDiskManageService {
         let marker = ''
         while (hasFile) {
           await new Promise<void>((resolve, reject) => {
-            // 列举当前目录下的所有文件
+            // Lister tous les fichiers du répertoire actuel
             this.bucketManager.listPrefix(
               this.qiniuConfig.bucket,
               {
@@ -797,7 +797,7 @@ export class NetDiskManageService {
   }
 
   /**
-   * 移动文件，含文件夹
+   * Déplacer des fichiers, y compris les dossiers
    */
   async moveMultiFileOrDir(
     fileList: FileOpItem[],
@@ -809,7 +809,7 @@ export class NetDiskManageService {
       force: true,
     }
     if (files.length > 0) {
-      // 批处理文件
+      // Traitement par lots des fichiers
       const copyOperations = files.map((item) => {
         const fileName = `${dir}${item.name}`
         const toFileName = `${toDir}${item.name}`
@@ -831,7 +831,7 @@ export class NetDiskManageService {
             resolve()
           }
           else if (respInfo.statusCode === 298) {
-            reject(new Error('操作异常，但部分文件夹删除成功'))
+            reject(new Error('Opération anormale, mais certains dossiers ont été supprimés avec succès'))
           }
           else {
             reject(
@@ -843,14 +843,14 @@ export class NetDiskManageService {
         })
       })
     }
-    // 处理文件夹
+    // Traitement des dossiers
     const dirs = fileList.filter(item => item.type === 'dir')
     if (dirs.length > 0) {
-      // 处理文件夹的复制
+      // Traitement du déplacement des dossiers
       for (let i = 0; i < dirs.length; i++) {
         const dirName = `${dir}${dirs[i].name}/`
         const toDirName = `${toDir}${dirs[i].name}/`
-        // 移动的目录不是是自己
+        // Le répertoire de destination ne doit pas être lui-même
         if (toDirName.startsWith(dirName))
           continue
 
@@ -858,7 +858,7 @@ export class NetDiskManageService {
         let marker = ''
         while (hasFile) {
           await new Promise<void>((resolve, reject) => {
-            // 列举当前目录下的所有文件
+            // Lister tous les fichiers du répertoire actuel
             this.bucketManager.listPrefix(
               this.qiniuConfig.bucket,
               {

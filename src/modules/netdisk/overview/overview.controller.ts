@@ -19,7 +19,7 @@ export const permissions = definePermission('netdisk:overview', {
   DESC: 'desc',
 } as const)
 
-@ApiTags('NetDiskOverview - 网盘概览模块')
+@ApiTags('NetDiskOverview - Module de vue d\'ensemble du disque réseau')
 @Controller('overview')
 export class NetDiskOverviewController {
   constructor(private overviewService: NetDiskOverviewService) {}
@@ -28,7 +28,7 @@ export class NetDiskOverviewController {
   @CacheKey('netdisk_overview_desc')
   @CacheTTL(3600)
   @UseInterceptors(CacheInterceptor)
-  @ApiOperation({ summary: '获取网盘空间数据统计' })
+  @ApiOperation({ summary: 'Obtenir les statistiques de l\'espace disque réseau' })
   @ApiOkResponse({ type: OverviewSpaceInfo })
   @Perm(permissions.DESC)
   async space(): Promise<OverviewSpaceInfo> {

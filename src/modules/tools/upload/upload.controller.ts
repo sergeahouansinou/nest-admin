@@ -15,14 +15,14 @@ export const permissions = definePermission('upload', {
 } as const)
 
 @ApiSecurityAuth()
-@ApiTags('Tools - 上传模块')
+@ApiTags('Tools - Module de téléversement')
 @Controller('upload')
 export class UploadController {
   constructor(private uploadService: UploadService) {}
 
   @Post()
   @Perm(permissions.UPLOAD)
-  @ApiOperation({ summary: '上传' })
+  @ApiOperation({ summary: 'Téléverser' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: FileUploadDto,
@@ -47,7 +47,7 @@ export class UploadController {
     }
     catch (error) {
       console.log(error)
-      throw new BadRequestException('上传失败')
+      throw new BadRequestException('Échec du téléversement')
     }
   }
 }

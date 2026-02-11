@@ -24,7 +24,7 @@ export class UploadService {
   ) {}
 
   /**
-   * 保存文件上传记录
+   * Sauvegarder l'enregistrement du téléversement de fichier
    */
   async saveFile(file: MultipartFile, userId: number): Promise<string> {
     if (isNil(file))

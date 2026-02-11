@@ -45,9 +45,9 @@ export class FileConstraint implements ValidatorConstraintInterface {
 }
 
 /**
- * 图片验证规则
- * @param limits 限制选项
- * @param validationOptions class-validator选项
+ * Règle de validation d'image
+ * @param limits Options de limitation
+ * @param validationOptions Options class-validator
  */
 export function IsFile(
   limits?: FileLimit,

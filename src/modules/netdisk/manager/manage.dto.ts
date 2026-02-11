@@ -41,12 +41,12 @@ export class IsLegalNameExpression implements ValidatorConstraintInterface {
 }
 
 export class FileOpItem {
-  @ApiProperty({ description: '文件类型', enum: ['file', 'dir'] })
+  @ApiProperty({ description: 'Type de fichier', enum: ['file', 'dir'] })
   @IsString()
   @Matches(/(^file$)|(^dir$)/)
   type: string
 
-  @ApiProperty({ description: '文件名称' })
+  @ApiProperty({ description: 'Nom du fichier' })
   @IsString()
   @IsNotEmpty()
   @Validate(IsLegalNameExpression)
@@ -54,16 +54,16 @@ export class FileOpItem {
 }
 
 export class GetFileListDto {
-  @ApiProperty({ description: '分页标识' })
+  @ApiProperty({ description: 'Marqueur de pagination' })
   @IsOptional()
   @IsString()
   marker: string
 
-  @ApiProperty({ description: '当前路径' })
+  @ApiProperty({ description: 'Chemin actuel' })
   @IsString()
   path: string
 
-  @ApiPropertyOptional({ description: '搜索关键字' })
+  @ApiPropertyOptional({ description: 'Mot-clé de recherche' })
   @Validate(IsLegalNameExpression)
   @ValidateIf(o => !isEmpty(o.key))
   @IsString()
@@ -71,92 +71,92 @@ export class GetFileListDto {
 }
 
 export class MKDirDto {
-  @ApiProperty({ description: '文件夹名称' })
+  @ApiProperty({ description: 'Nom du dossier' })
   @IsNotEmpty()
   @IsString()
   @Validate(IsLegalNameExpression)
   dirName: string
 
-  @ApiProperty({ description: '所属路径' })
+  @ApiProperty({ description: 'Chemin d\'appartenance' })
   @IsString()
   path: string
 }
 
 export class RenameDto {
-  @ApiProperty({ description: '文件类型' })
+  @ApiProperty({ description: 'Type de fichier' })
   @IsString()
   @Matches(/(^file$)|(^dir$)/)
   type: string
 
-  @ApiProperty({ description: '更改的名称' })
+  @ApiProperty({ description: 'Nouveau nom' })
   @IsString()
   @IsNotEmpty()
   @Validate(IsLegalNameExpression)
   toName: string
 
-  @ApiProperty({ description: '原来的名称' })
+  @ApiProperty({ description: 'Nom original' })
   @IsString()
   @IsNotEmpty()
   @Validate(IsLegalNameExpression)
   name: string
 
-  @ApiProperty({ description: '路径' })
+  @ApiProperty({ description: 'Chemin' })
   @IsString()
   path: string
 }
 
 export class FileInfoDto {
-  @ApiProperty({ description: '文件名' })
+  @ApiProperty({ description: 'Nom du fichier' })
   @IsString()
   @IsNotEmpty()
   @Validate(IsLegalNameExpression)
   name: string
 
-  @ApiProperty({ description: '文件所在路径' })
+  @ApiProperty({ description: 'Chemin du fichier' })
   @IsString()
   path: string
 }
 
 export class DeleteDto {
-  @ApiProperty({ description: '需要操作的文件或文件夹', type: [FileOpItem] })
+  @ApiProperty({ description: 'Fichiers ou dossiers à traiter', type: [FileOpItem] })
   @Type(() => FileOpItem)
   @ArrayMaxSize(NETDISK_HANDLE_MAX_ITEM)
   @ValidateNested({ each: true })
   files: FileOpItem[]
 
-  @ApiProperty({ description: '所在目录' })
+  @ApiProperty({ description: 'Répertoire' })
   @IsString()
   path: string
 }
 
 export class MarkFileDto {
-  @ApiProperty({ description: '文件名' })
+  @ApiProperty({ description: 'Nom du fichier' })
   @IsString()
   @IsNotEmpty()
   @Validate(IsLegalNameExpression)
   name: string
 
-  @ApiProperty({ description: '文件所在路径' })
+  @ApiProperty({ description: 'Chemin du fichier' })
   @IsString()
   path: string
 
-  @ApiProperty({ description: '备注信息' })
+  @ApiProperty({ description: 'Informations de remarque' })
   @IsString()
   mark: string
 }
 
 export class FileOpDto {
-  @ApiProperty({ description: '需要操作的文件或文件夹', type: [FileOpItem] })
+  @ApiProperty({ description: 'Fichiers ou dossiers à traiter', type: [FileOpItem] })
   @Type(() => FileOpItem)
   @ArrayMaxSize(NETDISK_HANDLE_MAX_ITEM)
   @ValidateNested({ each: true })
   files: FileOpItem[]
 
-  @ApiProperty({ description: '操作前的目录' })
+  @ApiProperty({ description: 'Répertoire avant l\'opération' })
   @IsString()
   originPath: string
 
-  @ApiProperty({ description: '操作后的目录' })
+  @ApiProperty({ description: 'Répertoire après l\'opération' })
   @IsString()
   toPath: string
 }

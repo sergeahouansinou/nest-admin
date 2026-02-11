@@ -23,13 +23,13 @@ export class NetDiskOverviewService {
     )
   }
 
-  /** 获取格式化后的起始和结束时间 */
+  /** Obtenir les dates de début et de fin formatées */
   getStartAndEndDate(start: Date, end = new Date()) {
     return [dayjs(start).format(this.FORMAT), dayjs(end).format(this.FORMAT)]
   }
 
   /**
-   * 获取数据统计接口路径
+   * Obtenir le chemin de l'interface de statistiques
    * @see: https://developer.qiniu.com/kodo/3906/statistic-interface
    */
   getStatisticUrl(type: string, queryParams = {}) {
@@ -42,7 +42,7 @@ export class NetDiskOverviewService {
     return decodeURIComponent(`${OSS_API}/v6/${type}?${searchParams}`)
   }
 
-  /** 获取统计数据 */
+  /** Obtenir les données statistiques */
   getStatisticData(url: string) {
     const accessToken = qiniu.util.generateAccessTokenV2(
       this.mac,
@@ -59,7 +59,7 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * 获取当天零时
+   * Obtenir minuit du jour actuel
    */
   getZeroHourToDay(current: Date): Date {
     const year = dayjs(current).year()
@@ -69,7 +69,7 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * 获取当月1号零时
+   * Obtenir minuit du 1er du mois en cours
    */
   getZeroHourAnd1Day(current: Date): Date {
     const year = dayjs(current).year()
@@ -78,7 +78,7 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * 该接口可以获取标准存储的当前存储量。可查询当天计量，统计延迟大概 5 分钟。
+   * Cette interface permet d'obtenir le volume de stockage standard actuel. Peut interroger les mesures du jour, avec un délai statistique d'environ 5 minutes.
    * https://developer.qiniu.com/kodo/3908/statistic-space
    */
   async getSpace(beginDate: Date, endDate = new Date()): Promise<SpaceInfo> {
@@ -94,7 +94,7 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * 该接口可以获取标准存储的文件数量。可查询当天计量，统计延迟大概 5 分钟。
+   * Cette interface permet d'obtenir le nombre de fichiers en stockage standard. Peut interroger les mesures du jour, avec un délai statistique d'environ 5 minutes.
    * https://developer.qiniu.com/kodo/3914/count
    */
   async getCount(beginDate: Date, endDate = new Date()): Promise<CountInfo> {
@@ -110,8 +110,8 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * 外网流出流量统计
-   * 该接口可以获取外网流出流量、CDN回源流量统计和 GET 请求次数。可查询当天计量，统计延迟大概 5 分钟。
+   * Statistiques du trafic sortant externe
+   * Cette interface permet d'obtenir les statistiques du trafic sortant externe, du trafic de retour CDN et du nombre de requêtes GET. Peut interroger les mesures du jour, avec un délai statistique d'environ 5 minutes.
    * https://developer.qiniu.com/kodo/3820/blob-io
    */
   async getFlow(beginDate: Date, endDate = new Date()): Promise<FlowInfo> {
@@ -131,8 +131,8 @@ export class NetDiskOverviewService {
   }
 
   /**
-   * GET 请求次数统计
-   * 该接口可以获取外网流出流量、CDN回源流量统计和 GET 请求次数。可查询当天计量，统计延迟大概 5 分钟。
+   * Statistiques du nombre de requêtes GET
+   * Cette interface permet d'obtenir les statistiques du trafic sortant externe, du trafic de retour CDN et du nombre de requêtes GET. Peut interroger les mesures du jour, avec un délai statistique d'environ 5 minutes.
    * https://developer.qiniu.com/kodo/3820/blob-io
    */
   async getHit(beginDate: Date, endDate = new Date()): Promise<HitInfo> {

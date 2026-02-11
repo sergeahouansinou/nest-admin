@@ -6,7 +6,7 @@ import { MailerService } from '~/shared/mailer/mailer.service'
 import { Mission } from '../mission.decorator'
 
 /**
- * Api接口请求类型任务
+ * Tâche de type requête d'interface API
  */
 @Injectable()
 @Mission()

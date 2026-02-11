@@ -6,7 +6,7 @@ import { TaskLogService } from '~/modules/system/log/services/task-log.service'
 import { Mission } from '../mission.decorator'
 
 /**
- * 管理后台日志清理任务
+ * Tâche de nettoyage des journaux du back-office d'administration
  */
 @Injectable()
 @Mission()

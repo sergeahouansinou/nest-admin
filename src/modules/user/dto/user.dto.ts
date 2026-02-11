@@ -19,48 +19,48 @@ import { isEmpty } from 'lodash'
 import { PagerDto } from '~/common/dto/pager.dto'
 
 export class UserDto {
-  @ApiProperty({ description: '头像' })
+  @ApiProperty({ description: 'Avatar' })
   @IsOptional()
   @IsString()
   avatar?: string
 
-  @ApiProperty({ description: '登录账号', example: 'admin' })
+  @ApiProperty({ description: 'Identifiant de connexion', example: 'admin' })
   @IsString()
   @Matches(/^[\s\S]+$/)
   @MinLength(4)
   @MaxLength(20)
   username: string
 
-  @ApiProperty({ description: '登录密码', example: 'a123456' })
+  @ApiProperty({ description: 'Mot de passe de connexion', example: 'a123456' })
   @IsOptional()
   @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i, {
-    message: '密码必须包含数字、字母，长度为6-16',
+    message: 'Le mot de passe doit contenir des chiffres et des lettres, longueur de 6 à 16',
   })
   password: string
 
-  @ApiProperty({ description: '归属角色', type: [Number] })
+  @ApiProperty({ description: 'Rôles attribués', type: [Number] })
   @ArrayNotEmpty()
   @ArrayMinSize(1)
   @ArrayMaxSize(3)
   roleIds: number[]
 
-  @ApiProperty({ description: '归属大区', type: Number })
+  @ApiProperty({ description: 'Département attribué', type: Number })
   @Type(() => Number)
   @IsInt()
   @IsOptional()
   deptId?: number
 
-  @ApiProperty({ description: '呢称', example: 'admin' })
+  @ApiProperty({ description: 'Surnom', example: 'admin' })
   @IsOptional()
   @IsString()
   nickname: string
 
-  @ApiProperty({ description: '邮箱', example: 'bqy.dev@qq.com' })
+  @ApiProperty({ description: 'E-mail', example: 'bqy.dev@qq.com' })
   @IsEmail()
   @ValidateIf(o => !isEmpty(o.email))
   email: string
 
-  @ApiProperty({ description: '手机号' })
+  @ApiProperty({ description: 'Numéro de téléphone' })
   @IsOptional()
   @IsString()
   phone?: string
@@ -73,12 +73,12 @@ export class UserDto {
   @MaxLength(11)
   qq?: string
 
-  @ApiProperty({ description: '备注' })
+  @ApiProperty({ description: 'Remarque' })
   @IsOptional()
   @IsString()
   remark?: string
 
-  @ApiProperty({ description: '状态' })
+  @ApiProperty({ description: 'Statut' })
   @IsIn([0, 1])
   status: number
 }
@@ -86,12 +86,12 @@ export class UserDto {
 export class UserUpdateDto extends PartialType(UserDto) {}
 
 export class UserQueryDto extends IntersectionType(PagerDto<UserDto>, PartialType(UserDto)) {
-  @ApiProperty({ description: '归属大区', example: 1, required: false })
+  @ApiProperty({ description: 'Département attribué', example: 1, required: false })
   @IsInt()
   @IsOptional()
   deptId?: number
 
-  @ApiProperty({ description: '状态', example: 0, required: false })
+  @ApiProperty({ description: 'Statut', example: 0, required: false })
   @IsInt()
   @IsOptional()
   status?: number

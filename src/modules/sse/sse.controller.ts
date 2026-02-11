@@ -10,7 +10,7 @@ import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { OnlineService } from '../system/online/online.service'
 import { MessageEvent, SseService } from './sse.service'
 
-@ApiTags('System - sse模块')
+@ApiTags('System - Module SSE')
 @ApiSecurityAuth()
 @SkipThrottle()
 @Controller('sse')
@@ -29,13 +29,13 @@ export class SseController implements BeforeApplicationShutdown {
     })
   }
 
-  // 通过控制台关闭程序时触发
+  // Déclenché lors de la fermeture du programme via la console
   beforeApplicationShutdown() {
     // console.log('beforeApplicationShutdown')
     this.closeAllConnect()
   }
 
-  @ApiOperation({ summary: '服务端推送消息' })
+  @ApiOperation({ summary: 'Messages push côté serveur' })
   @Sse(':uid')
   async sse(
     @Param('uid', ParseIntPipe) uid: number,
@@ -48,20 +48,20 @@ export class SseController implements BeforeApplicationShutdown {
     this.onlineService.addOnlineUser(req.accessToken, ip, ua)
 
     return new Observable((subscriber) => {
-      // 定时推送，保持连接
+      // Push périodique pour maintenir la connexion
       const subscription = interval(12000).subscribe(() => {
         subscriber.next({ type: 'ping' })
       })
-      // console.log(`user-${uid}已连接`)
+      // console.log(`user-${uid} connecté`)
       this.sseService.addClient(uid, subscriber)
 
-      // 当客户端断开连接时
+      // Lorsque le client se déconnecte
       req.raw.on('close', () => {
         subscription.unsubscribe()
         this.sseService.removeClient(uid, subscriber)
         this.replyMap.delete(uid)
         this.onlineService.removeOnlineUser(req.accessToken)
-        console.log(`user-${uid}已关闭`)
+        console.log(`user-${uid} déconnecté`)
       })
     })
   }

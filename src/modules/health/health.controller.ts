@@ -18,7 +18,7 @@ export const PermissionHealth = definePermission('app:health', {
   DISK: 'disk',
 } as const)
 
-@ApiTags('Health - 健康检查')
+@ApiTags('Health - Vérification de santé')
 @Controller('health')
 export class HealthController {
   constructor(
