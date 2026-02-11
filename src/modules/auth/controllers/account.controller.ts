@@ -16,7 +16,7 @@ import { AuthService } from '../auth.service'
 import { AccountMenus, AccountUpdateDto } from '../dto/account.dto'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 
-@ApiTags('Account - 账户模块')
+@ApiTags('Account - Module de compte')
 @ApiSecurityAuth()
 @ApiExtraModels(AccountInfo)
 @UseGuards(JwtAuthGuard)
@@ -28,7 +28,7 @@ export class AccountController {
   ) {}
 
   @Get('profile')
-  @ApiOperation({ summary: '获取账户资料' })
+  @ApiOperation({ summary: 'Obtenir les informations du compte' })
   @ApiResult({ type: AccountInfo })
   @AllowAnon()
   async profile(@AuthUser() user: IAuthUser): Promise<AccountInfo> {
@@ -36,14 +36,14 @@ export class AccountController {
   }
 
   @Get('logout')
-  @ApiOperation({ summary: '账户登出' })
+  @ApiOperation({ summary: 'Déconnexion du compte' })
   @AllowAnon()
   async logout(@AuthUser() user: IAuthUser, @Req() req: FastifyRequest): Promise<void> {
     await this.authService.clearLoginStatus(user, req.accessToken)
   }
 
   @Get('menus')
-  @ApiOperation({ summary: '获取菜单列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des menus' })
   @ApiResult({ type: [AccountMenus] })
   @AllowAnon()
   async menu(@AuthUser() user: IAuthUser) {
@@ -51,7 +51,7 @@ export class AccountController {
   }
 
   @Get('permissions')
-  @ApiOperation({ summary: '获取权限列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des permissions' })
   @ApiResult({ type: [String] })
   @AllowAnon()
   async permissions(@AuthUser() user: IAuthUser): Promise<string[]> {
@@ -59,7 +59,7 @@ export class AccountController {
   }
 
   @Put('update')
-  @ApiOperation({ summary: '更改账户资料' })
+  @ApiOperation({ summary: 'Modifier les informations du compte' })
   @AllowAnon()
   async update(
     @AuthUser() user: IAuthUser, @Body()
@@ -69,7 +69,7 @@ dto: AccountUpdateDto,
   }
 
   @Post('password')
-  @ApiOperation({ summary: '更改账户密码' })
+  @ApiOperation({ summary: 'Modifier le mot de passe du compte' })
   @AllowAnon()
   async password(
     @AuthUser() user: IAuthUser, @Body()

@@ -59,7 +59,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     // const response = context.switchToHttp().getResponse<FastifyReply>()
     if (RouterWhiteList.includes(request.routeOptions.url))
       return true
-    // TODO 此处代码的作用是判断如果在演示环境下，则拒绝用户的增删改操作，去掉此代码不影响正常的业务逻辑
+    // TODO Ce code sert à refuser les opérations d'ajout, suppression et modification de l'utilisateur en mode démonstration. Supprimer ce code n'affecte pas la logique métier normale
     if (request.method !== 'GET' && !request.url.includes('/auth/login'))
       checkIsDemoMode()
 
@@ -73,7 +73,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
     const token = this.jwtFromRequestFn(request)
 
-    // 检查 token 是否在黑名单中
+    // Vérifier si le token est dans la liste noire
     if (await this.redis.get(genTokenBlacklistKey(token)))
       throw new BusinessException(ErrorEnum.INVALID_LOGIN)
 
@@ -84,18 +84,18 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
       result = await super.canActivate(context)
     }
     catch (err) {
-      // 需要后置判断 这样携带了 token 的用户就能够解析到 request.user
+      // Jugement postérieur nécessaire pour que les utilisateurs portant un token puissent être résolus dans request.user
       if (isPublic)
         return true
 
       if (isEmpty(token))
-        throw new UnauthorizedException('未登录')
+        throw new UnauthorizedException('Non connecté')
 
-      // 在 handleRequest 中 user 为 null 时会抛出 UnauthorizedException
+      // Dans handleRequest, lorsque user est null, une UnauthorizedException est levée
       if (err instanceof UnauthorizedException)
         throw new BusinessException(ErrorEnum.INVALID_LOGIN)
 
-      // 判断 token 是否有效且存在, 如果不存在则认证失败
+      // Vérifier si le token est valide et existe, sinon l'authentification échoue
       const isValid = isNil(token)
         ? undefined
         : await this.tokenService.checkAccessToken(token!)
@@ -104,26 +104,26 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
         throw new BusinessException(ErrorEnum.INVALID_LOGIN)
     }
 
-    // SSE 请求
+    // Requête SSE
     if (isSse) {
       const { uid } = request.params
 
       if (Number(uid) !== request.user.uid)
-        throw new UnauthorizedException('路径参数 uid 与当前 token 登录的用户 uid 不一致')
+        throw new UnauthorizedException('Le paramètre uid du chemin ne correspond pas à l\'uid de l\'utilisateur connecté avec le token actuel')
     }
 
     const pv = await this.authService.getPasswordVersionByUid(request.user.uid)
     if (pv !== `${request.user.pv}`) {
-      // 密码版本不一致，登录期间已更改过密码
+      // Version du mot de passe incohérente, le mot de passe a été modifié pendant la session
       throw new BusinessException(ErrorEnum.INVALID_LOGIN)
     }
 
-    // 不允许多端登录
+    // Connexion multi-appareils non autorisée
     if (!this.appConfig.multiDeviceLogin) {
       const cacheToken = await this.authService.getTokenByUid(request.user.uid)
 
       if (token !== cacheToken) {
-        // 与redis保存不一致 即二次登录
+        // Incohérent avec le token enregistré dans Redis, c'est-à-dire une seconde connexion
         throw new BusinessException(ErrorEnum.ACCOUNT_LOGGED_IN_ELSEWHERE)
       }
     }

@@ -18,14 +18,14 @@ export class CaptchaService {
   ) {}
 
   /**
-   * 校验图片验证码
+   * Vérifier le captcha image
    */
   async checkImgCaptcha(id: string, code: string): Promise<void> {
     const result = await this.redis.get(genCaptchaImgKey(id))
     if (isEmpty(result) || code.toLowerCase() !== result.toLowerCase())
       throw new BusinessException(ErrorEnum.INVALID_VERIFICATION_CODE)
 
-    // 校验成功后移除验证码
+    // Supprimer le captcha après une vérification réussie
     await this.redis.del(genCaptchaImgKey(id))
   }
 

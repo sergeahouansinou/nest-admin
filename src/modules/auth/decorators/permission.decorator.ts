@@ -11,24 +11,24 @@ import { PERMISSION_KEY } from '../auth.constant'
    [K in keyof P]: K extends string ? `${T}:${P[K]}` : never
  }
 
-/** 资源操作需要特定的权限 */
+/** Les opérations sur les ressources nécessitent des permissions spécifiques */
 export function Perm(permission: string | string[]) {
   return applyDecorators(SetMetadata(PERMISSION_KEY, permission))
 }
 
-/** (此举非必需)保存通过 definePermission 定义的所有权限，可用于前端开发人员开发阶段的 ts 类型提示，避免前端权限定义与后端定义不匹配 */
+/** (Optionnel) Enregistrer toutes les permissions définies via definePermission, utilisable pour les indications de type TypeScript lors du développement frontend, afin d'éviter les incohérences entre les définitions de permissions frontend et backend */
 let permissions: string[] = []
 /**
- * 定义权限，同时收集所有被定义的权限
+ * Définir les permissions et collecter toutes les permissions définies
  *
- * - 通过对象形式定义, eg:
+ * - Définition sous forme d'objet, ex :
  * ```ts
  * definePermission('app:health', {
  *  NETWORK: 'network'
  * };
  * ```
  *
- * - 通过字符串数组形式定义, eg:
+ * - Définition sous forme de tableau de chaînes, ex :
  * ```ts
  * definePermission('app:health', ['network']);
  * ```
@@ -54,5 +54,5 @@ export function definePermission(modulePrefix: string, actions) {
   }
 }
 
-/** 获取所有通过 definePermission 定义的权限 */
+/** Obtenir toutes les permissions définies via definePermission */
 export const getDefinePermissions = () => permissions

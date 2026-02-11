@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class ImageCaptcha {
-  @ApiProperty({ description: 'base64格式的svg图片' })
+  @ApiProperty({ description: 'Image SVG au format base64' })
   img: string
 
-  @ApiProperty({ description: '验证码对应的唯一ID' })
+  @ApiProperty({ description: 'ID unique correspondant au captcha' })
   id: string
 }
 
 export class LoginToken {
-  @ApiProperty({ description: 'JWT身份Token' })
+  @ApiProperty({ description: 'Token d\'identité JWT' })
   token: string
 }

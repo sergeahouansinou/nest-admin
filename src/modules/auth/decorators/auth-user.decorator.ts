@@ -4,7 +4,7 @@ import { FastifyRequest } from 'fastify'
 type Payload = keyof IAuthUser
 
 /**
- * @description 获取当前登录用户信息, 并挂载到request上
+ * @description Obtenir les informations de l'utilisateur actuellement connecté et les attacher à la requête
  */
 export const AuthUser = createParamDecorator(
   (data: Payload, ctx: ExecutionContext) => {

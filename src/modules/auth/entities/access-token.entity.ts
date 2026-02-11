@@ -21,10 +21,10 @@ export class AccessTokenEntity extends BaseEntity {
   @Column({ length: 500 })
   value!: string
 
-  @Column({ comment: '令牌过期时间' })
+  @Column({ comment: 'Date d\'expiration du jeton' })
   expired_at!: Date
 
-  @CreateDateColumn({ comment: '令牌创建时间' })
+  @CreateDateColumn({ comment: 'Date de création du jeton' })
   created_at!: Date
 
   @OneToOne(() => RefreshTokenEntity, refreshToken => refreshToken.accessToken, {
