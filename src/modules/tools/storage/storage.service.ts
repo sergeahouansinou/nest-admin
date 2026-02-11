@@ -29,7 +29,7 @@ export class StorageService {
   }
 
   /**
-   * 删除文件
+   * Supprimer un fichier
    */
   async delete(fileIds: number[]): Promise<void> {
     const items = await this.storageRepository.findByIds(fileIds)

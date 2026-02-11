@@ -15,7 +15,7 @@ import { AccessTokenEntity } from '../entities/access-token.entity'
 import { RefreshTokenEntity } from '../entities/refresh-token.entity'
 
 /**
- * 令牌服务
+ * Service de jetons
  */
 @Injectable()
 export class TokenService {
@@ -27,7 +27,7 @@ export class TokenService {
   ) {}
 
   /**
-   * 根据accessToken刷新AccessToken与RefreshToken
+   * Rafraîchir l'AccessToken et le RefreshToken à partir de l'accessToken
    * @param accessToken
    */
   async refreshToken(accessToken: AccessTokenEntity) {
@@ -35,14 +35,14 @@ export class TokenService {
 
     if (refreshToken) {
       const now = dayjs()
-      // 判断refreshToken是否过期
+      // Vérifier si le refreshToken a expiré
       if (now.isAfter(refreshToken.expired_at))
         return null
 
       const roleIds = await this.roleService.getRoleIdsByUser(user.id)
       const roleValues = await this.roleService.getRoleValues(roleIds)
 
-      // 如果没过期则生成新的access_token和refresh_token
+      // S'il n'a pas expiré, générer de nouveaux access_token et refresh_token
       const token = await this.generateAccessToken(user.id, roleValues)
 
       await accessToken.remove()
@@ -66,7 +66,7 @@ export class TokenService {
 
     const jwtSign = await this.jwtService.signAsync(payload)
 
-    // 生成accessToken
+    // Générer l'accessToken
     const accessToken = new AccessTokenEntity()
     accessToken.value = jwtSign
     accessToken.user = { id: uid } as UserEntity
@@ -76,7 +76,7 @@ export class TokenService {
 
     await accessToken.save()
 
-    // 生成refreshToken
+    // Générer le refreshToken
     const refreshToken = await this.generateRefreshToken(accessToken, dayjs())
 
     return {
@@ -86,7 +86,7 @@ export class TokenService {
   }
 
   /**
-   * 生成新的RefreshToken并存入数据库
+   * Générer un nouveau RefreshToken et le stocker dans la base de données
    * @param accessToken
    * @param now
    */
@@ -115,7 +115,7 @@ export class TokenService {
   }
 
   /**
-   * 检查accessToken是否存在，并且是否处于有效期内
+   * Vérifier si l'accessToken existe et s'il est encore valide
    * @param value
    */
   async checkAccessToken(value: string) {
@@ -135,7 +135,7 @@ export class TokenService {
   }
 
   /**
-   * 移除AccessToken且自动移除关联的RefreshToken
+   * Supprimer l'AccessToken et automatiquement supprimer le RefreshToken associé
    * @param value
    */
   async removeAccessToken(value: string) {
@@ -149,7 +149,7 @@ export class TokenService {
   }
 
   /**
-   * 移除RefreshToken
+   * Supprimer le RefreshToken
    * @param value
    */
   async removeRefreshToken(value: string) {
@@ -166,7 +166,7 @@ export class TokenService {
   }
 
   /**
-   * 验证Token是否正确,如果正确则返回所属用户对象
+   * Vérifier si le Token est correct, et retourner l'objet utilisateur correspondant s'il est valide
    * @param token
    */
   async verifyAccessToken(token: string): Promise<IAuthUser> {

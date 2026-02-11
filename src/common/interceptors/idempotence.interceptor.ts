@@ -27,23 +27,23 @@ export interface IdempotenceOption {
   pendingMessage?: string
 
   /**
-   * 如果重复请求的话，手动处理异常
+   * Si la requête est dupliquée, gérer l'exception manuellement
    */
   handler?: (req: FastifyRequest) => any
 
   /**
-   * 记录重复请求的时间
+   * Durée d'enregistrement de la requête dupliquée
    * @default 60
    */
   expired?: number
 
   /**
-   * 如果 header 没有幂等 key，根据 request 生成 key，如何生成这个 key 的方法
+   * Si le header ne contient pas de clé d'idempotence, méthode pour générer la clé à partir de la requête
    */
   generateKey?: (req: FastifyRequest) => string
 
   /**
-   * 仅读取 header 的 key，不自动生成
+   * Lire uniquement la clé du header, sans génération automatique
    * @default false
    */
   disableGenerateKey?: boolean
@@ -59,7 +59,7 @@ export class IdempotenceInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler) {
     const request = context.switchToHttp().getRequest<FastifyRequest>()
 
-    // skip Get 请求
+    // Ignorer les requêtes Get
     if (request.method.toUpperCase() === 'GET')
       return next.handle()
 
@@ -73,8 +73,8 @@ export class IdempotenceInterceptor implements NestInterceptor {
       return next.handle()
 
     const {
-      errorMessage = '相同请求成功后在 60 秒内只能发送一次',
-      pendingMessage = '相同请求正在处理中...',
+      errorMessage = 'Une requête identique réussie ne peut être envoyée qu\'une seule fois dans les 60 secondes',
+      pendingMessage = 'Une requête identique est en cours de traitement...',
       handler: errorHandler,
       expired = 60,
       disableGenerateKey = false,

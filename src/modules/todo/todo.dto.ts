@@ -4,7 +4,7 @@ import { IsString } from 'class-validator'
 import { PagerDto } from '~/common/dto/pager.dto'
 
 export class TodoDto {
-  @ApiProperty({ description: '名称' })
+  @ApiProperty({ description: 'Nom' })
   @IsString()
   value: string
 }

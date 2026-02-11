@@ -2,11 +2,11 @@
 
 ![](https://img.shields.io/github/commit-activity/m/buqiyuan/nest-admin) ![](https://img.shields.io/github/license/buqiyuan/nest-admin) ![](https://img.shields.io/github/repo-size/buqiyuan/nest-admin) ![](https://img.shields.io/github/languages/top/buqiyuan/nest-admin)
 
-**基于 NestJs + TypeScript + TypeORM + Redis + MySql + Vue3 + Ant Design Vue 编写的一款简单高效的前后端分离的权限管理系统。希望这个项目在全栈的路上能够帮助到你。**
+**Un système de gestion des autorisations simple et efficace avec séparation front-end/back-end, développé avec NestJs + TypeScript + TypeORM + Redis + MySql + Vue3 + Ant Design Vue. Nous espérons que ce projet pourra vous aider dans votre parcours full-stack.**
 
-- 前端项目地址：[传送门](https://github.com/buqiyuan/vue3-antdv-admin)
+- Adresse du projet front-end : [Lien](https://github.com/buqiyuan/vue3-antdv-admin)
 
-## 演示地址
+## Adresse de démonstration
 
 <ul>
   <li>
@@ -14,9 +14,9 @@
       <summary>
         <a href="https://vue3-antdv-admin.pages.dev/" target="_blank">
         https://vue3-antdv-admin.pages.dev/
-        </a>（墙内）
+        </a>（accès national）
       </summary>
-      只读，可以完整地预览项目的初始效果
+      Lecture seule, vous pouvez prévisualiser l'effet initial complet du projet
     </details>
   </li>
   <li>
@@ -24,55 +24,55 @@
       <summary>
         <a href="https://vue3-antd-admin.vercel.app/" target="_blank">
         https://vue3-antd-admin.vercel.app/
-        </a>（墙外）
+        </a>（accès international）
       </summary>
       <ul>
         <li>
-        可随意 CRUD，所以你看到的数据可能已经被其他人修改过，而非项目得初始效果，并且数据库的数据会在每天凌晨 4.30 分重置一次。
+        Les opérations CRUD sont libres, les données que vous voyez peuvent donc avoir été modifiées par d'autres utilisateurs et ne reflètent pas l'état initial du projet. La base de données est réinitialisée chaque jour à 4h30 du matin.
         </li>
-        <li>由于是白嫖的国外服务器资源，所以不保熟， 并可能还需要翻墙浏览。</li>
+        <li>Étant donné que les ressources serveur à l'étranger sont gratuites, la stabilité n'est pas garantie et un VPN peut être nécessaire pour y accéder.</li>
       </ul>
     </details>
   </li>
   <li>
    <a href="https://nest-admin.buqiyuan.top/api-docs/" target="_blank">
-      Swagger 文档
+      Documentation Swagger
    </a>
   </li>
 </ul>
 
-## 项目启动前的准备工作
+## Préparation avant le démarrage du projet
 
-- sql 文件：[/deploy/sql/nest_admin.sql](https://github.com/buqiyuan/nest-admin/tree/main/deploy/sql/nest_admin.sql) 用于数据库初始化
-- 项目相关配置，如：配置 mysql 和 redis 连接
-  - 公共配置: [.env](https://github.com/buqiyuan/nest-admin/blob/main/.env)
-  - 开发环境: [.env.development](https://github.com/buqiyuan/nest-admin/blob/main/.env.development)
-  - 生产环境: [.env.production](https://github.com/buqiyuan/nest-admin/blob/main/.env.production)
+- Fichier SQL : [/deploy/sql/nest_admin.sql](https://github.com/buqiyuan/nest-admin/tree/main/deploy/sql/nest_admin.sql) pour l'initialisation de la base de données
+- Configuration du projet, par exemple : configurer les connexions mysql et redis
+  - Configuration commune : [.env](https://github.com/buqiyuan/nest-admin/blob/main/.env)
+  - Environnement de développement : [.env.development](https://github.com/buqiyuan/nest-admin/blob/main/.env.development)
+  - Environnement de production : [.env.production](https://github.com/buqiyuan/nest-admin/blob/main/.env.production)
 
-## 环境要求
+## Prérequis
 
 - `nodejs` `20`+
-- `docker` `20.x`+ ，其中 `docker compose`版本需要 `2.17.0`+
+- `docker` `20.x`+, dont la version de `docker compose` doit être `2.17.0`+
 - `mysql` `8.x`+
-- 使用 [`pnpm`](https://pnpm.io/zh/) 包管理器安装项目依赖
+- Utiliser le gestionnaire de paquets [`pnpm`](https://pnpm.io/zh/) pour installer les dépendances du projet
 
-演示环境账号密码：
+Identifiants de l'environnement de démonstration :
 
-|   账号    |  密码  |    权限    |
+|   Compte    |  Mot de passe  |    Autorisation    |
 | :-------: | :----: | :--------: |
-| admin | a123456 | 超级管理员 |
+| admin | a123456 | Super administrateur |
 
-> 所有新建的用户初始密码都为 a123456
+> Le mot de passe initial de tous les nouveaux utilisateurs est a123456
 
-本地部署账号密码：
+Identifiants de déploiement local :
 
-|   账号    |  密码  |    权限    |
+|   Compte    |  Mot de passe  |    Autorisation    |
 | :-------: | :----: | :--------: |
-| admin | a123456 | 超级管理员 |
+| admin | a123456 | Super administrateur |
 
-## 快速体验
+## Démarrage rapide
 
-启动成功后，通过 <http://localhost:7001/api-docs/> 访问。
+Après un démarrage réussi, accédez via <http://localhost:7001/api-docs/>.
 
 ```bash
 pnpm docker:up
@@ -80,7 +80,7 @@ pnpm docker:up
 docker compose --env-file .env --env-file .env.production up -d --no-build
 ```
 
-停止并删除所有容器
+Arrêter et supprimer tous les conteneurs
 
 ```bash
 pnpm docker:down
@@ -88,7 +88,7 @@ pnpm docker:down
 docker compose --env-file .env --env-file .env.production down
 ```
 
-删除镜像
+Supprimer les images
 
 ```bash
 pnpm docker:rmi
@@ -96,7 +96,7 @@ pnpm docker:rmi
 docker rmi buqiyuan/nest-admin-server:stable
 ```
 
-查看实时日志输出
+Voir la sortie des journaux en temps réel
 
 ```bash
 pnpm docker:logs
@@ -105,24 +105,24 @@ docker compose --env-file .env --env-file .env.production logs -f
 
 ```
 
-## 本地开发
+## Développement local
 
-- 获取项目代码
+- Obtenir le code du projet
 
 ```bash
 git clone https://github.com/buqiyuan/nest-admin
 ```
 
-- 【可选】如果你是新手，还不太会搭建`mysql/redis`，你可以使用 `Docker` 启动指定服务供本地开发时使用, 例如：
+- [Optionnel] Si vous êtes débutant et ne savez pas encore comment configurer `mysql/redis`, vous pouvez utiliser `Docker` pour démarrer les services nécessaires au développement local, par exemple :
 
 ```bash
-# 启动MySql服务
+# Démarrer le service MySql
 docker compose --env-file .env --env-file .env.development run -d --service-ports mysql
-# 启动Redis服务
+# Démarrer le service Redis
 docker compose --env-file .env --env-file .env.development run -d --service-ports redis
 ```
 
-- 安装依赖
+- Installer les dépendances
 
 ```bash
 cd nest-admin
@@ -131,45 +131,45 @@ pnpm install
 
 ```
 
-- 运行
-  启动成功后，通过 <http://localhost:7001/api-docs/> 访问。
+- Exécuter
+  Après un démarrage réussi, accédez via <http://localhost:7001/api-docs/>.
 
 ```bash
 pnpm dev
 ```
 
-- 打包
+- Compiler
 
 ```bash
 pnpm build
 ```
 
-## 数据库迁移
+## Migration de la base de données
 
-1. 更新数据库(或初始化数据)
+1. Mettre à jour la base de données (ou initialiser les données)
 
 ```bash
 pnpm migration:run
 ```
 
-2. 生成迁移
+2. Générer une migration
 
 ```bash
 pnpm migration:generate
 ```
 
-3. 回滚到最后一次更新
+3. Revenir à la dernière mise à jour
 
 ```bash
 pnpm migration:revert
 ```
 
-更多细节，请移步至[官方文档](https://typeorm.io/migrations)
+Pour plus de détails, veuillez consulter la [documentation officielle](https://typeorm.io/migrations)
 
 > [!TIP]
-> 如果你的`实体类`或`数据库配置`有更新，请执行`npm run build`后再进行数据库迁移相关操作。
+> Si vos `classes d'entité` ou votre `configuration de base de données` ont été mises à jour, veuillez exécuter `npm run build` avant d'effectuer les opérations de migration de base de données.
 
-## 系统截图
+## Captures d'écran du système
 
 ![](https://s1.ax1x.com/2021/12/11/oTi1nf.png)
 
@@ -179,11 +179,11 @@ pnpm migration:revert
 
 ![](https://s1.ax1x.com/2021/12/11/oTia3n.png)
 
-### 欢迎 Star && PR
+### Bienvenue pour les Star et PR
 
-**如果项目有帮助到你可以点个 Star 支持下。有更好的实现欢迎 PR。**
+**Si ce projet vous a été utile, n'hésitez pas à lui donner une Star. Les PR pour de meilleures implémentations sont les bienvenues.**
 
-### 致谢
+### Remerciements
 
 - [sf-nest-admin](https://github.com/hackycy/sf-nest-admin)
 

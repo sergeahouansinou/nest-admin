@@ -17,11 +17,11 @@ import { UserEntity } from '../../user/user.entity'
 @Tree('materialized-path')
 export class DeptEntity extends CompleteEntity {
   @Column()
-  @ApiProperty({ description: '部门名称' })
+  @ApiProperty({ description: 'Nom du département' })
   name: string
 
   @Column({ nullable: true, default: 0 })
-  @ApiProperty({ description: '排序' })
+  @ApiProperty({ description: 'Ordre de tri' })
   orderNo: number
 
   @TreeChildren({ cascade: true })

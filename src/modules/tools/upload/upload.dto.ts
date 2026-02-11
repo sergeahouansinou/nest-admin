@@ -6,7 +6,7 @@ import { IsDefined } from 'class-validator'
 import { IsFile } from './file.constraint'
 
 export class FileUploadDto {
-  @ApiProperty({ type: 'string', format: 'binary', description: '文件' })
+  @ApiProperty({ type: 'string', format: 'binary', description: 'Fichier' })
   @IsDefined()
   @IsFile(
     {
@@ -20,7 +20,7 @@ export class FileUploadDto {
       fileSize: 1024 * 1024 * 10,
     },
     {
-      message: '文件类型不正确',
+      message: 'Le type de fichier est incorrect',
     },
   )
   file: MultipartFile

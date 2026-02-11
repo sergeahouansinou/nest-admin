@@ -21,14 +21,14 @@ export const permissions = definePermission('system:dict-type', {
   DELETE: 'delete',
 } as const)
 
-@ApiTags('System - 字典类型模块')
+@ApiTags('System - Module des types de dictionnaire')
 @ApiSecurityAuth()
 @Controller('dict-type')
 export class DictTypeController {
   constructor(private dictTypeService: DictTypeService) {}
 
   @Get()
-  @ApiOperation({ summary: '获取字典类型列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des types de dictionnaire' })
   @ApiResult({ type: [DictTypeEntity], isPage: true })
   @Perm(permissions.LIST)
   async list(@Query() dto: DictTypeQueryDto): Promise<Pagination<DictTypeEntity>> {
@@ -36,7 +36,7 @@ export class DictTypeController {
   }
 
   @Get('select-options')
-  @ApiOperation({ summary: '一次性获取所有的字典类型(不分页)' })
+  @ApiOperation({ summary: 'Obtenir tous les types de dictionnaire en une seule fois (sans pagination)' })
   @ApiResult({ type: [DictTypeEntity] })
   @Perm(permissions.LIST)
   async getAll(): Promise<DictTypeEntity[]> {
@@ -44,14 +44,14 @@ export class DictTypeController {
   }
 
   @Post()
-  @ApiOperation({ summary: '新增字典类型' })
+  @ApiOperation({ summary: 'Ajouter un type de dictionnaire' })
   @Perm(permissions.CREATE)
   async create(@Body(CreatorPipe) dto: DictTypeDto): Promise<void> {
     await this.dictTypeService.create(dto)
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '查询字典类型信息' })
+  @ApiOperation({ summary: 'Consulter les informations du type de dictionnaire' })
   @ApiResult({ type: DictTypeEntity })
   @Perm(permissions.READ)
   async info(@IdParam() id: number): Promise<DictTypeEntity> {
@@ -59,14 +59,14 @@ export class DictTypeController {
   }
 
   @Post(':id')
-  @ApiOperation({ summary: '更新字典类型' })
+  @ApiOperation({ summary: 'Mettre à jour le type de dictionnaire' })
   @Perm(permissions.UPDATE)
   async update(@IdParam() id: number, @Body(UpdaterPipe) dto: DictTypeDto): Promise<void> {
     await this.dictTypeService.update(id, dto)
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '删除指定的字典类型' })
+  @ApiOperation({ summary: 'Supprimer le type de dictionnaire spécifié' })
   @Perm(permissions.DELETE)
   async delete(@IdParam() id: number): Promise<void> {
     await this.dictTypeService.delete(id)

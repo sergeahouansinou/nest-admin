@@ -34,11 +34,11 @@ import { SocketModule } from './socket/socket.module'
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
-      // 指定多个 env 文件时，第一个优先级最高
+      // Lors de la spécification de plusieurs fichiers env, le premier a la priorité la plus élevée
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
-    // 启用 CLS 上下文
+    // Activer le contexte CLS
     ClsModule.forRoot({
       global: true,
       // https://github.com/Papooch/nestjs-cls/issues/92
@@ -47,7 +47,7 @@ import { SocketModule } from './socket/socket.module'
         setup: (cls, context) => {
           const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>()
           if (req.params?.id && req.body) {
-            // 供自定义参数验证器(UniqueConstraint)使用
+            // Utilisé par le validateur de paramètres personnalisé (UniqueConstraint)
             cls.set('operateId', Number.parseInt(req.params.id))
           }
         },

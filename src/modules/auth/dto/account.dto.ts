@@ -11,17 +11,17 @@ import {
 import { MenuEntity } from '~/modules/system/menu/menu.entity'
 
 export class AccountUpdateDto {
-  @ApiProperty({ description: '用户呢称' })
+  @ApiProperty({ description: 'Surnom de l\'utilisateur' })
   @IsString()
   @IsOptional()
   nickname: string
 
-  @ApiProperty({ description: '用户邮箱' })
+  @ApiProperty({ description: 'E-mail de l\'utilisateur' })
   @IsOptional()
   @IsEmail()
   email: string
 
-  @ApiProperty({ description: '用户QQ' })
+  @ApiProperty({ description: 'QQ de l\'utilisateur' })
   @IsOptional()
   @IsString()
   @Matches(/^\d+$/)
@@ -29,28 +29,28 @@ export class AccountUpdateDto {
   @MaxLength(11)
   qq: string
 
-  @ApiProperty({ description: '用户手机号' })
+  @ApiProperty({ description: 'Numéro de téléphone de l\'utilisateur' })
   @IsOptional()
   @IsString()
   phone: string
 
-  @ApiProperty({ description: '用户头像' })
+  @ApiProperty({ description: 'Avatar de l\'utilisateur' })
   @IsOptional()
   @IsString()
   avatar: string
 
-  @ApiProperty({ description: '用户备注' })
+  @ApiProperty({ description: 'Remarque de l\'utilisateur' })
   @IsOptional()
   @IsString()
   remark: string
 }
 
 export class ResetPasswordDto {
-  @ApiProperty({ description: '临时token', example: 'uuid' })
+  @ApiProperty({ description: 'Token temporaire', example: 'uuid' })
   @IsString()
   accessToken: string
 
-  @ApiProperty({ description: '密码', example: 'a123456' })
+  @ApiProperty({ description: 'Mot de passe', example: 'a123456' })
   @IsString()
   @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i)
   @MinLength(6)

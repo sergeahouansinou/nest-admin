@@ -52,8 +52,8 @@ export class AuthService {
   }
 
   /**
-   * 获取登录JWT
-   * 返回null则账号密码有误，不存在该用户
+   * Obtenir le JWT de connexion
+   * Retourne null si le nom d'utilisateur ou le mot de passe est incorrect, l'utilisateur n'existe pas
    */
   async login(
     username: string,
@@ -73,15 +73,15 @@ export class AuthService {
 
     const roles = await this.roleService.getRoleValues(roleIds)
 
-    // 包含access_token和refresh_token
+    // Contient access_token et refresh_token
     const token = await this.tokenService.generateAccessToken(user.id, roles)
 
     await this.redis.set(genAuthTokenKey(user.id), token.accessToken, 'EX', this.securityConfig.jwtExprire)
 
-    // 设置密码版本号 当密码修改时，版本号+1
+    // Définir le numéro de version du mot de passe, incrémenté de 1 lors de la modification du mot de passe
     await this.redis.set(genAuthPVKey(user.id), 1)
 
-    // 设置菜单权限
+    // Définir les permissions du menu
     const permissions = await this.menuService.getPermissions(user.id)
     await this.setPermissionsCache(user.id, permissions)
 
@@ -91,7 +91,7 @@ export class AuthService {
   }
 
   /**
-   * 效验账号密码
+   * Vérifier le nom d'utilisateur et le mot de passe
    */
   async checkPassword(username: string, password: string) {
     const user = await this.userService.findUserByUserName(username)
@@ -106,7 +106,7 @@ export class AuthService {
   }
 
   /**
-   * 重置密码
+   * Réinitialiser le mot de passe
    */
   async resetPassword(username: string, password: string) {
     const user = await this.userService.findUserByUserName(username)
@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   /**
-   * 清除登录状态信息
+   * Effacer les informations de statut de connexion
    */
   async clearLoginStatus(user: IAuthUser, accessToken: string): Promise<void> {
     const exp = user.exp ? (user.exp - Date.now() / 1000).toFixed(0) : this.securityConfig.jwtExprire
@@ -127,14 +127,14 @@ export class AuthService {
   }
 
   /**
-   * 获取菜单列表
+   * Obtenir la liste des menus
    */
   async getMenus(uid: number) {
     return this.menuService.getMenus(uid)
   }
 
   /**
-   * 获取权限列表
+   * Obtenir la liste des permissions
    */
   async getPermissions(uid: number): Promise<string[]> {
     return this.menuService.getPermissions(uid)

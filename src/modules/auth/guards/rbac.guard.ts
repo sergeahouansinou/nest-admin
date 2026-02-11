@@ -34,7 +34,7 @@ export class RbacGuard implements CanActivate {
     if (!user)
       throw new BusinessException(ErrorEnum.INVALID_LOGIN)
 
-    // allowAnon 是需要登录后可访问(无需权限), Public 则是无需登录也可访问.
+    // allowAnon nécessite une connexion pour accéder (sans permission requise), Public est accessible sans connexion.
     const allowAnon = this.reflector.get<boolean>(
       ALLOW_ANON_KEY,
       context.getHandler(),
@@ -46,11 +46,11 @@ export class RbacGuard implements CanActivate {
       string | string[]
     >(PERMISSION_KEY, [context.getHandler(), context.getClass()])
 
-    // 控制器没有设置接口权限，则默认通过
+    // Si le contrôleur n'a pas défini de permission d'interface, autoriser par défaut
     if (!payloadPermission)
       return true
 
-    // 管理员放开所有权限
+    // L'administrateur a toutes les permissions
     if (user.roles.includes(Roles.ADMIN))
       return true
 
@@ -60,7 +60,7 @@ export class RbacGuard implements CanActivate {
 
     // handle permission strings
     if (Array.isArray(payloadPermission)) {
-      // 只要有一个权限满足即可
+      // Il suffit qu'une seule permission soit satisfaite
       canNext = payloadPermission.every(i => allPermissions.includes(i))
     }
 

@@ -11,14 +11,14 @@ import { Public } from '../decorators/public.decorator'
 
 import { SendEmailCodeDto } from '../dto/captcha.dto'
 
-@ApiTags('Auth - 认证模块')
+@ApiTags('Auth - Module d\'authentification')
 @UseGuards(ThrottlerGuard)
 @Controller('auth/email')
 export class EmailController {
   constructor(private mailerService: MailerService) {}
 
   @Post('send')
-  @ApiOperation({ summary: '发送邮箱验证码' })
+  @ApiOperation({ summary: 'Envoyer le code de vérification par e-mail' })
   @Public()
   @Throttle({ default: { limit: 2, ttl: 600000 } })
   async sendEmailCode(

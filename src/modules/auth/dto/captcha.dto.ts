@@ -12,7 +12,7 @@ export class ImageCaptchaDto {
   @ApiProperty({
     required: false,
     default: 100,
-    description: '验证码宽度',
+    description: 'Largeur du captcha',
   })
   @Type(() => Number)
   @IsInt()
@@ -22,7 +22,7 @@ export class ImageCaptchaDto {
   @ApiProperty({
     required: false,
     default: 50,
-    description: '验证码宽度',
+    description: 'Hauteur du captcha',
   })
   @Type(() => Number)
   @IsInt()
@@ -31,23 +31,23 @@ export class ImageCaptchaDto {
 }
 
 export class SendEmailCodeDto {
-  @ApiProperty({ description: '邮箱' })
-  @IsEmail({}, { message: '邮箱格式不正确' })
+  @ApiProperty({ description: 'E-mail' })
+  @IsEmail({}, { message: 'Format d\'e-mail incorrect' })
   email: string
 }
 
 export class SendSmsCodeDto {
-  @ApiProperty({ description: '手机号' })
-  @IsMobilePhone('zh-CN', {}, { message: '手机号格式不正确' })
+  @ApiProperty({ description: 'Numéro de téléphone' })
+  @IsMobilePhone('zh-CN', {}, { message: 'Format de numéro de téléphone incorrect' })
   phone: string
 }
 
 export class CheckCodeDto {
-  @ApiProperty({ description: '手机号/邮箱' })
+  @ApiProperty({ description: 'Numéro de téléphone/E-mail' })
   @IsString()
   account: string
 
-  @ApiProperty({ description: '验证码' })
+  @ApiProperty({ description: 'Code de vérification' })
   @IsString()
   code: string
 }

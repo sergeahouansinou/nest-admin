@@ -25,7 +25,7 @@ export class TodoService {
   async detail(id: number): Promise<TodoEntity> {
     const item = await this.todoRepository.findOneBy({ id })
     if (!item)
-      throw new NotFoundException('未找到该记录')
+      throw new NotFoundException('Enregistrement non trouvé')
 
     return item
   }

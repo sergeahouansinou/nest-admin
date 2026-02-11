@@ -23,7 +23,7 @@ const providers = [EntityExistConstraint, UniqueConstraint]
         let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all'
 
         try {
-          // 解析成 js 数组 ['error']
+          // Parser en tableau js ['error']
           loggerOptions = JSON.parse(loggerOptions)
         }
         catch {

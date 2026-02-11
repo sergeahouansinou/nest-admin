@@ -14,7 +14,7 @@ function genBaseProp(type: Type<any>) {
 }
 
 /**
- * @description: 生成返回结果装饰器
+ * @description: Générateur de décorateur de résultat de retour
  */
 export function ApiResult<TModel extends Type<any>>({
   type,

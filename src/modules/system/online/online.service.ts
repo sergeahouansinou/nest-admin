@@ -31,7 +31,7 @@ export class OnlineService {
     private sseService: SseService,
   ) {}
 
-  /** 在线用户数量变动时，通知前端实时更新在线用户数量或列表, 3 秒内最多推送一次，避免频繁触发 */
+  /** Lorsque le nombre d'utilisateurs en ligne change, notifier le front-end pour mettre à jour en temps réel le nombre ou la liste des utilisateurs en ligne, maximum une fois toutes les 3 secondes pour éviter les déclenchements fréquents */
   updateOnlineUserCount = throttle(async () => {
     const keys = await this.redis.keys(genOnlineUserKey('*'))
     this.sseService.sendToAllUser({ type: 'updateOnlineUserCount', data: keys.length })
@@ -82,14 +82,14 @@ export class OnlineService {
     this.updateOnlineUserCount()
   }
 
-  /** 移除所有在线用户 */
+  /** Supprimer tous les utilisateurs en ligne */
   async clearOnlineUser() {
     const keys = await this.redis.keys(genOnlineUserKey('*'))
     await this.redis.del(keys)
   }
 
   /**
-   * 罗列在线用户列表
+   * Lister les utilisateurs en ligne
    */
   async listOnlineUser(value: string): Promise<OnlineUserInfo[]> {
     const token = await AccessTokenEntity.findOne({
@@ -110,7 +110,7 @@ export class OnlineService {
   }
 
   /**
-   * 下线当前用户
+   * Déconnecter l'utilisateur actuel
    */
   async kickUser(tokenId: string, user: IAuthUser): Promise<void> {
     const token = await AccessTokenEntity.findOne({

@@ -40,13 +40,13 @@ export const permissions = definePermission('netdisk:manage', {
   COPY: 'copy',
 } as const)
 
-@ApiTags('NetDiskManage - 网盘管理模块')
+@ApiTags('NetDiskManage - Module de gestion du disque réseau')
 @Controller('manage')
 export class NetDiskManageController {
   constructor(private manageService: NetDiskManageService) {}
 
   @Get('list')
-  @ApiOperation({ summary: '获取文件列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des fichiers' })
   @ApiOkResponse({ type: SFileList })
   @Perm(permissions.LIST)
   async list(@Query() dto: GetFileListDto): Promise<SFileList> {
@@ -54,7 +54,7 @@ export class NetDiskManageController {
   }
 
   @Post('mkdir')
-  @ApiOperation({ summary: '创建文件夹，支持多级' })
+  @ApiOperation({ summary: 'Créer un dossier, multi-niveaux supportés' })
   @Perm(permissions.MKDIR)
   async mkdir(@Body() dto: MKDirDto): Promise<void> {
     const result = await this.manageService.checkFileExist(
@@ -67,7 +67,7 @@ export class NetDiskManageController {
   }
 
   @Get('token')
-  @ApiOperation({ summary: '获取上传Token，无Token前端无法上传' })
+  @ApiOperation({ summary: 'Obtenir le Token de téléversement, le front-end ne peut pas téléverser sans Token' })
   @ApiOkResponse({ type: UploadToken })
   @Perm(permissions.TOKEN)
   async token(@AuthUser() user: IAuthUser): Promise<UploadToken> {
@@ -79,7 +79,7 @@ export class NetDiskManageController {
   }
 
   @Get('info')
-  @ApiOperation({ summary: '获取文件详细信息' })
+  @ApiOperation({ summary: 'Obtenir les informations détaillées du fichier' })
   @ApiOkResponse({ type: SFileInfoDetail })
   @Perm(permissions.INFO)
   async info(@Query() dto: FileInfoDto): Promise<SFileInfoDetail> {
@@ -87,7 +87,7 @@ export class NetDiskManageController {
   }
 
   @Post('mark')
-  @ApiOperation({ summary: '添加文件备注' })
+  @ApiOperation({ summary: 'Ajouter une remarque au fichier' })
   @Perm(permissions.MARK)
   async mark(@Body() dto: MarkFileDto): Promise<void> {
     await this.manageService.changeFileHeaders(dto.name, dto.path, {
@@ -96,7 +96,7 @@ export class NetDiskManageController {
   }
 
   @Get('download')
-  @ApiOperation({ summary: '获取下载链接，不支持下载文件夹' })
+  @ApiOperation({ summary: 'Obtenir le lien de téléchargement, le téléchargement de dossiers n\'est pas supporté' })
   @ApiOkResponse({ type: String })
   @Perm(permissions.DOWNLOAD)
   async download(@Query() dto: FileInfoDto): Promise<string> {
@@ -104,7 +104,7 @@ export class NetDiskManageController {
   }
 
   @Post('rename')
-  @ApiOperation({ summary: '重命名文件或文件夹' })
+  @ApiOperation({ summary: 'Renommer un fichier ou un dossier' })
   @Perm(permissions.RENAME)
   async rename(@Body() dto: RenameDto): Promise<void> {
     const result = await this.manageService.checkFileExist(
@@ -120,14 +120,14 @@ export class NetDiskManageController {
   }
 
   @Post('delete')
-  @ApiOperation({ summary: '删除文件或文件夹' })
+  @ApiOperation({ summary: 'Supprimer un fichier ou un dossier' })
   @Perm(permissions.DELETE)
   async delete(@Body() dto: DeleteDto): Promise<void> {
     await this.manageService.deleteMultiFileOrDir(dto.files, dto.path)
   }
 
   @Post('cut')
-  @ApiOperation({ summary: '剪切文件或文件夹，支持批量' })
+  @ApiOperation({ summary: 'Couper un fichier ou un dossier, traitement par lots supporté' })
   @Perm(permissions.CUT)
   async cut(@Body() dto: FileOpDto): Promise<void> {
     if (dto.originPath === dto.toPath)
@@ -141,7 +141,7 @@ export class NetDiskManageController {
   }
 
   @Post('copy')
-  @ApiOperation({ summary: '复制文件或文件夹，支持批量' })
+  @ApiOperation({ summary: 'Copier un fichier ou un dossier, traitement par lots supporté' })
   @Perm(permissions.COPY)
   async copy(@Body() dto: FileOpDto): Promise<void> {
     await this.manageService.copyMultiFileOrDir(

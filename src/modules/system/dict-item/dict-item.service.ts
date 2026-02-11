@@ -17,7 +17,7 @@ export class DictItemService {
   ) {}
 
   /**
-   * 罗列所有配置
+   * Lister toutes les configurations
    */
   async page({
     page,
@@ -38,14 +38,14 @@ export class DictItemService {
   }
 
   /**
-   * 获取参数总数
+   * Obtenir le nombre total de paramètres
    */
   async countConfigList(): Promise<number> {
     return this.dictItemRepository.count()
   }
 
   /**
-   * 新增
+   * Ajouter
    */
   async create(dto: DictItemDto): Promise<void> {
     const { typeId, ...rest } = dto
@@ -58,7 +58,7 @@ export class DictItemService {
   }
 
   /**
-   * 更新
+   * Mettre à jour
    */
   async update(id: number, dto: Partial<DictItemDto>): Promise<void> {
     const { typeId, ...rest } = dto
@@ -71,14 +71,14 @@ export class DictItemService {
   }
 
   /**
-   * 删除
+   * Supprimer
    */
   async delete(id: number): Promise<void> {
     await this.dictItemRepository.delete(id)
   }
 
   /**
-   * 查询单个
+   * Rechercher un élément
    */
   async findOne(id: number): Promise<DictItemEntity> {
     return this.dictItemRepository.findOneBy({ id })

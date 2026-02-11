@@ -1,62 +1,62 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class Runtime {
-  @ApiProperty({ description: '系统' })
+  @ApiProperty({ description: 'Système' })
   os?: string
 
-  @ApiProperty({ description: '服务器架构' })
+  @ApiProperty({ description: 'Architecture du serveur' })
   arch?: string
 
-  @ApiProperty({ description: 'Node版本' })
+  @ApiProperty({ description: 'Version de Node' })
   nodeVersion?: string
 
-  @ApiProperty({ description: 'Npm版本' })
+  @ApiProperty({ description: 'Version de Npm' })
   npmVersion?: string
 }
 
 export class CoreLoad {
-  @ApiProperty({ description: '当前CPU资源消耗' })
+  @ApiProperty({ description: 'Consommation actuelle des ressources CPU' })
   rawLoad?: number
 
-  @ApiProperty({ description: '当前空闲CPU资源' })
+  @ApiProperty({ description: 'Ressources CPU actuellement inactives' })
   rawLoadIdle?: number
 }
 
 // Intel(R) Xeon(R) Platinum 8163 CPU @ 2.50GHz
 export class Cpu {
-  @ApiProperty({ description: '制造商' })
+  @ApiProperty({ description: 'Fabricant' })
   manufacturer?: string
 
-  @ApiProperty({ description: '品牌' })
+  @ApiProperty({ description: 'Marque' })
   brand?: string
 
-  @ApiProperty({ description: '物理核心数' })
+  @ApiProperty({ description: 'Nombre de cœurs physiques' })
   physicalCores?: number
 
-  @ApiProperty({ description: '型号' })
+  @ApiProperty({ description: 'Modèle' })
   model?: string
 
-  @ApiProperty({ description: '速度 in GHz' })
+  @ApiProperty({ description: 'Vitesse en GHz' })
   speed?: number
 
-  @ApiProperty({ description: 'CPU资源消耗 原始滴答' })
+  @ApiProperty({ description: 'Consommation des ressources CPU - ticks bruts' })
   rawCurrentLoad?: number
 
-  @ApiProperty({ description: '空闲CPU资源 原始滴答' })
+  @ApiProperty({ description: 'Ressources CPU inactives - ticks bruts' })
   rawCurrentLoadIdle?: number
 
-  @ApiProperty({ description: 'cpu资源消耗', type: [CoreLoad] })
+  @ApiProperty({ description: 'Consommation des ressources CPU', type: [CoreLoad] })
   coresLoad?: CoreLoad[]
 }
 
 export class Disk {
-  @ApiProperty({ description: '磁盘空间大小 (bytes)' })
+  @ApiProperty({ description: 'Taille de l\'espace disque (bytes)' })
   size?: number
 
-  @ApiProperty({ description: '已使用磁盘空间 (bytes)' })
+  @ApiProperty({ description: 'Espace disque utilisé (bytes)' })
   used?: number
 
-  @ApiProperty({ description: '可用磁盘空间 (bytes)' })
+  @ApiProperty({ description: 'Espace disque disponible (bytes)' })
   available?: number
 }
 
@@ -64,23 +64,23 @@ export class Memory {
   @ApiProperty({ description: 'total memory in bytes' })
   total?: number
 
-  @ApiProperty({ description: '可用内存' })
+  @ApiProperty({ description: 'Mémoire disponible' })
   available?: number
 }
 
 /**
- * 系统信息
+ * Informations système
  */
 export class ServeStatInfo {
-  @ApiProperty({ description: '运行环境', type: Runtime })
+  @ApiProperty({ description: 'Environnement d\'exécution', type: Runtime })
   runtime?: Runtime
 
-  @ApiProperty({ description: 'CPU信息', type: Cpu })
+  @ApiProperty({ description: 'Informations CPU', type: Cpu })
   cpu?: Cpu
 
-  @ApiProperty({ description: '磁盘信息', type: Disk })
+  @ApiProperty({ description: 'Informations disque', type: Disk })
   disk?: Disk
 
-  @ApiProperty({ description: '内存信息', type: Memory })
+  @ApiProperty({ description: 'Informations mémoire', type: Memory })
   memory?: Memory
 }

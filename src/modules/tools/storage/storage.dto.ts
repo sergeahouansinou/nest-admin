@@ -4,64 +4,64 @@ import { ArrayNotEmpty, IsArray, IsOptional, IsString } from 'class-validator'
 import { PagerDto } from '~/common/dto/pager.dto'
 
 export class StoragePageDto extends PagerDto {
-  @ApiProperty({ description: '文件名' })
+  @ApiProperty({ description: 'Nom du fichier' })
   @IsOptional()
   @IsString()
   name: string
 
-  @ApiProperty({ description: '文件后缀' })
+  @ApiProperty({ description: 'Extension du fichier' })
   @IsString()
   @IsOptional()
   extName: string
 
-  @ApiProperty({ description: '文件类型' })
+  @ApiProperty({ description: 'Type de fichier' })
   @IsString()
   @IsOptional()
   type: string
 
-  @ApiProperty({ description: '大小' })
+  @ApiProperty({ description: 'Taille' })
   @IsString()
   @IsOptional()
   size: string
 
-  @ApiProperty({ description: '上传时间' })
+  @ApiProperty({ description: 'Date de téléversement' })
   @IsOptional()
   time: string[]
 
-  @ApiProperty({ description: '上传者' })
+  @ApiProperty({ description: 'Auteur du téléversement' })
   @IsString()
   @IsOptional()
   username: string
 }
 
 export class StorageCreateDto {
-  @ApiProperty({ description: '文件名' })
+  @ApiProperty({ description: 'Nom du fichier' })
   @IsString()
   name: string
 
-  @ApiProperty({ description: '真实文件名' })
+  @ApiProperty({ description: 'Nom réel du fichier' })
   @IsString()
   fileName: string
 
-  @ApiProperty({ description: '文件扩展名' })
+  @ApiProperty({ description: 'Extension du fichier' })
   @IsString()
   extName: string
 
-  @ApiProperty({ description: '文件路径' })
+  @ApiProperty({ description: 'Chemin du fichier' })
   @IsString()
   path: string
 
-  @ApiProperty({ description: '文件路径' })
+  @ApiProperty({ description: 'Chemin du fichier' })
   @IsString()
   type: string
 
-  @ApiProperty({ description: '文件大小' })
+  @ApiProperty({ description: 'Taille du fichier' })
   @IsString()
   size: string
 }
 
 export class StorageDeleteDto {
-  @ApiProperty({ description: '需要删除的文件ID列表', type: [Number] })
+  @ApiProperty({ description: 'Liste des ID de fichiers à supprimer', type: [Number] })
   @IsArray()
   @ArrayNotEmpty()
   ids: number[]

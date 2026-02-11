@@ -18,21 +18,21 @@ export const permissions = definePermission('tool:storage', {
   DELETE: 'delete',
 } as const)
 
-@ApiTags('Tools - 存储模块')
+@ApiTags('Tools - Module de stockage')
 @ApiSecurityAuth()
 @Controller('storage')
 export class StorageController {
   constructor(private storageService: StorageService) {}
 
   @Get('list')
-  @ApiOperation({ summary: '获取本地存储列表' })
+  @ApiOperation({ summary: 'Obtenir la liste du stockage local' })
   @ApiResult({ type: [StorageInfo], isPage: true })
   @Perm(permissions.LIST)
   async list(@Query() dto: StoragePageDto): Promise<Pagination<StorageInfo>> {
     return this.storageService.list(dto)
   }
 
-  @ApiOperation({ summary: '删除文件' })
+  @ApiOperation({ summary: 'Supprimer un fichier' })
   @Post('delete')
   @Perm(permissions.DELETE)
   async delete(@Body() dto: StorageDeleteDto): Promise<void> {

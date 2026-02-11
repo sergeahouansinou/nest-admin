@@ -31,14 +31,14 @@ export const permissions = definePermission('todo', {
   DELETE: 'delete',
 } as const)
 
-@ApiTags('Business - Todo模块')
+@ApiTags('Business - Module Todo')
 @UseGuards(ResourceGuard)
 @Controller('todos')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Get()
-  @ApiOperation({ summary: '获取Todo列表' })
+  @ApiOperation({ summary: 'Obtenir la liste des Todo' })
   @ApiResult({ type: [TodoEntity] })
   @Perm(permissions.LIST)
   async list(@Query() dto: TodoQueryDto): Promise<Pagination<TodoEntity>> {
@@ -46,7 +46,7 @@ export class TodoController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '获取Todo详情' })
+  @ApiOperation({ summary: 'Obtenir les détails du Todo' })
   @ApiResult({ type: TodoEntity })
   @Perm(permissions.READ)
   async info(@IdParam() id: number): Promise<TodoEntity> {
@@ -54,14 +54,14 @@ export class TodoController {
   }
 
   @Post()
-  @ApiOperation({ summary: '创建Todo' })
+  @ApiOperation({ summary: 'Créer un Todo' })
   @Perm(permissions.CREATE)
   async create(@Body() dto: TodoDto): Promise<void> {
     await this.todoService.create(dto)
   }
 
   @Put(':id')
-  @ApiOperation({ summary: '更新Todo' })
+  @ApiOperation({ summary: 'Mettre à jour un Todo' })
   @Perm(permissions.UPDATE)
   @Resource(TodoEntity)
   async update(@IdParam() id: number, @Body()dto: TodoUpdateDto): Promise<void> {
@@ -69,7 +69,7 @@ export class TodoController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '删除Todo' })
+  @ApiOperation({ summary: 'Supprimer un Todo' })
   @Perm(permissions.DELETE)
   @Resource(TodoEntity)
   async delete(@IdParam() id: number): Promise<void> {

@@ -39,26 +39,26 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const status = this.getStatus(exception)
     let message = this.getErrorMessage(exception)
 
-    // 系统内部错误时
+    // En cas d'erreur interne du système
     if (
       status === HttpStatus.INTERNAL_SERVER_ERROR
       && !(exception instanceof BusinessException)
     ) {
       Logger.error(exception, undefined, 'Catch')
 
-      // 生产环境下隐藏错误信息
+      // Masquer les messages d'erreur en environnement de production
       if (!isDev)
         message = ErrorEnum.SERVER_ERROR?.split(':')[1]
     }
     else {
       this.logger.warn(
-        `错误信息：(${status}) ${message} Path: ${decodeURI(url)}`,
+        `Message d'erreur : (${status}) ${message} Path: ${decodeURI(url)}`,
       )
     }
 
     const apiErrorCode = exception instanceof BusinessException ? exception.getErrorCode() : status
 
-    // 返回基础响应结果
+    // Retourner le résultat de réponse de base
     const resBody: IBaseResponse = {
       code: apiErrorCode,
       message,

@@ -17,7 +17,7 @@ export class DictTypeService {
   ) {}
 
   /**
-   * 罗列所有配置
+   * Lister toutes les configurations
    */
   async page({
     page,
@@ -33,41 +33,41 @@ export class DictTypeService {
     return paginate(queryBuilder, { page, pageSize })
   }
 
-  /** 一次性获取所有的字典类型 */
+  /** Obtenir tous les types de dictionnaire en une seule fois */
   async getAll() {
     return this.dictTypeRepository.find()
   }
 
   /**
-   * 获取参数总数
+   * Obtenir le nombre total de paramètres
    */
   async countConfigList(): Promise<number> {
     return this.dictTypeRepository.count()
   }
 
   /**
-   * 新增
+   * Ajouter
    */
   async create(dto: DictTypeDto): Promise<void> {
     await this.dictTypeRepository.insert(dto)
   }
 
   /**
-   * 更新
+   * Mettre à jour
    */
   async update(id: number, dto: Partial<DictTypeDto>): Promise<void> {
     await this.dictTypeRepository.update(id, dto)
   }
 
   /**
-   * 删除
+   * Supprimer
    */
   async delete(id: number): Promise<void> {
     await this.dictTypeRepository.delete(id)
   }
 
   /**
-   * 查询单个
+   * Rechercher un élément
    */
   async findOne(id: number): Promise<DictTypeEntity> {
     return this.dictTypeRepository.findOneBy({ id })

@@ -27,12 +27,12 @@ export class TaskConsumer {
     try {
       await this.taskService.callService(data.service, data.args)
       const timing = Date.now() - startTime
-      // 任务执行成功
+      // Tâche exécutée avec succès
       await this.taskLogService.create(data.id, 1, timing)
     }
     catch (e) {
       const timing = Date.now() - startTime
-      // 执行失败
+      // Échec de l'exécution
       await this.taskLogService.create(data.id, 0, timing, `${e}`)
     }
   }

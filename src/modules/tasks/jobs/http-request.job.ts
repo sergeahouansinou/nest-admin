@@ -6,7 +6,7 @@ import { LoggerService } from '~/shared/logger/logger.service'
 import { Mission } from '../mission.decorator'
 
 /**
- * Api接口请求类型任务
+ * Tâche de type requête d'interface API
  */
 @Injectable()
 @Mission()
@@ -17,7 +17,7 @@ export class HttpRequestJob {
   ) {}
 
   /**
-   * 发起请求
+   * Envoyer une requête
    * @param config {AxiosRequestConfig}
    */
   async handle(config: unknown): Promise<void> {

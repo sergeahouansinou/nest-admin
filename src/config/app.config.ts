@@ -11,7 +11,7 @@ export const AppConfig = registerAs(appRegToken, () => ({
   baseUrl: env('APP_BASE_URL'),
   globalPrefix,
   locale: env('APP_LOCALE', 'zh-CN'),
-  /** 是否允许多端登录 */
+  /** Autoriser la connexion multi-appareils */
   multiDeviceLogin: envBoolean('MULTI_DEVICE_LOGIN', true),
 
   logger: {

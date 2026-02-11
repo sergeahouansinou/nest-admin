@@ -10,15 +10,15 @@ export const isTest = !!process.env.TEST
 export const cwd = process.cwd()
 
 /**
- * 基础类型接口
+ * Interface de type de base
  */
 export type BaseType = boolean | number | string | undefined | null
 
 /**
- * 格式化环境变量
- * @param key 环境变量的键值
- * @param defaultValue 默认值
- * @param callback 格式化函数
+ * Formater les variables d'environnement
+ * @param key Clé de la variable d'environnement
+ * @param defaultValue Valeur par défaut
+ * @param callback Fonction de formatage
  */
 function formatValue<T extends BaseType = string>(key: string, defaultValue: T, callback?: (value: string) => T): T {
   const value: string | undefined = process.env[key]

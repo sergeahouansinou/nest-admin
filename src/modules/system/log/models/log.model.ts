@@ -1,47 +1,47 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class LoginLogInfo {
-  @ApiProperty({ description: '日志编号' })
+  @ApiProperty({ description: 'Numéro du journal' })
   id: number
 
-  @ApiProperty({ description: '登录ip', example: '1.1.1.1' })
+  @ApiProperty({ description: 'IP de connexion', example: '1.1.1.1' })
   ip: string
 
-  @ApiProperty({ description: '登录地址' })
+  @ApiProperty({ description: 'Adresse de connexion' })
   address: string
 
-  @ApiProperty({ description: '系统', example: 'Windows 10' })
+  @ApiProperty({ description: 'Système', example: 'Windows 10' })
   os: string
 
-  @ApiProperty({ description: '浏览器', example: 'Chrome' })
+  @ApiProperty({ description: 'Navigateur', example: 'Chrome' })
   browser: string
 
-  @ApiProperty({ description: '登录用户名', example: 'admin' })
+  @ApiProperty({ description: 'Nom d\'utilisateur de connexion', example: 'admin' })
   username: string
 
-  @ApiProperty({ description: '登录时间', example: '2023-12-22 16:46:20.333843' })
+  @ApiProperty({ description: 'Heure de connexion', example: '2023-12-22 16:46:20.333843' })
   time: string
 }
 
 export class TaskLogInfo {
-  @ApiProperty({ description: '日志编号' })
+  @ApiProperty({ description: 'Numéro du journal' })
   id: number
 
-  @ApiProperty({ description: '任务编号' })
+  @ApiProperty({ description: 'Numéro de la tâche' })
   taskId: number
 
-  @ApiProperty({ description: '任务名称' })
+  @ApiProperty({ description: 'Nom de la tâche' })
   name: string
 
-  @ApiProperty({ description: '创建时间' })
+  @ApiProperty({ description: 'Date de création' })
   createdAt: string
 
-  @ApiProperty({ description: '耗时' })
+  @ApiProperty({ description: 'Temps consommé' })
   consumeTime: number
 
-  @ApiProperty({ description: '执行信息' })
+  @ApiProperty({ description: 'Informations d\'exécution' })
   detail: string
 
-  @ApiProperty({ description: '任务执行状态' })
+  @ApiProperty({ description: 'Statut d\'exécution de la tâche' })
   status: number
 }

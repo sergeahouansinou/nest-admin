@@ -8,7 +8,7 @@ import { env, envBoolean, envNumber } from '~/global/env'
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
-// 当前通过 npm scripts 执行的命令
+// Commande actuellement exécutée via npm scripts
 const currentScript = process.env.npm_lifecycle_event
 
 const dataSourceOptions: DataSourceOptions = {
@@ -19,7 +19,7 @@ const dataSourceOptions: DataSourceOptions = {
   password: env('DB_PASSWORD'),
   database: env('DB_DATABASE'),
   synchronize: envBoolean('DB_SYNCHRONIZE', false),
-  // 解决通过 pnpm migration:run 初始化数据时，遇到的 SET FOREIGN_KEY_CHECKS = 0; 等语句报错问题, 仅在执行数据迁移操作时设为 true
+  // Résoudre le problème d'erreurs avec les instructions SET FOREIGN_KEY_CHECKS = 0; lors de l'initialisation des données via pnpm migration:run, défini à true uniquement lors des opérations de migration
   multipleStatements: currentScript === 'typeorm',
   entities: ['dist/modules/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],

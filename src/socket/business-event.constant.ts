@@ -4,7 +4,7 @@ export enum BusinessEvents {
 
   AUTH_FAILED = 'AUTH_FAILED',
 
-  // 用户上线事件
+  // Événement de connexion utilisateur
   USER_ONLINE = 'USER_ONLINE',
   USER_OFFLINE = 'USER_OFFLINE',
   USER_KICK = 'USER_KICK',

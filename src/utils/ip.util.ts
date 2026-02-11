@@ -6,7 +6,7 @@ import type { IncomingMessage } from 'node:http'
  */
 import axios from 'axios'
 
-/* 判断IP是不是内网 */
+/* Vérifier si l'IP est une adresse réseau interne */
 function isLAN(ip: string) {
   ip.toLowerCase()
   if (ip === 'localhost')
@@ -35,13 +35,13 @@ export function getIp(request: FastifyRequest | IncomingMessage) {
 
   let ip: string
     = request.headers['x-forwarded-for']
-    || request.headers['X-Forwarded-For']
-    || request.headers['X-Real-IP']
-    || request.headers['x-real-ip']
-    || req?.ip
-    || req?.raw?.connection?.remoteAddress
-    || req?.raw?.socket?.remoteAddress
-    || undefined
+      || request.headers['X-Forwarded-For']
+      || request.headers['X-Real-IP']
+      || request.headers['x-real-ip']
+      || req?.ip
+      || req?.raw?.connection?.remoteAddress
+      || req?.raw?.socket?.remoteAddress
+      || undefined
   if (ip && ip.split(',').length > 0)
     ip = ip.split(',')[0]
 
@@ -50,7 +50,7 @@ export function getIp(request: FastifyRequest | IncomingMessage) {
 
 export async function getIpAddress(ip: string) {
   if (isLAN(ip))
-    return '内网IP'
+    return 'IP réseau interne'
   try {
     let { data } = await axios.get(
       `https://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`,
@@ -61,6 +61,6 @@ export async function getIpAddress(ip: string) {
     return data.addr.trim().split(' ').at(0)
   }
   catch (error) {
-    return '第三方接口请求失败'
+    return 'Échec de la requête vers le service tiers'
   }
 }

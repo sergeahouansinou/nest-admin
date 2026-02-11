@@ -18,7 +18,7 @@ export class CronService {
 
   @CronOnce(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async deleteExpiredJWT() {
-    this.logger.log('--> 开始扫表，清除过期的 token')
+    this.logger.log('--> Début du scan de table, suppression des tokens expirés')
 
     const expiredTokens = await AccessTokenEntity.find({
       where: {
@@ -34,7 +34,7 @@ export class CronService {
         await AccessTokenEntity.remove(token)
 
         this.logger.debug(
-          `--> 删除过期的 token：${value}, 签发于 ${dayjs(created_at).format(
+          `--> Suppression du token expiré : ${value}, émis le ${dayjs(created_at).format(
             'YYYY-MM-DD H:mm:ss',
           )}`,
         )
@@ -43,6 +43,6 @@ export class CronService {
       }),
     )
 
-    this.logger.log(`--> 删除了 ${deleteCount} 个过期的 token`)
+    this.logger.log(`--> ${deleteCount} token(s) expiré(s) supprimé(s)`)
   }
 }

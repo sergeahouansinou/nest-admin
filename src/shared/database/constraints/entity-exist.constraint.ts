@@ -10,12 +10,12 @@ import { DataSource, ObjectType, Repository } from 'typeorm'
 
 interface Condition {
   entity: ObjectType<any>
-  // 如果没有指定字段则使用当前验证的属性作为查询依据
+  // Si aucun champ n'est spécifié, utiliser la propriété en cours de validation comme critère de recherche
   field?: string
 }
 
 /**
- * 查询某个字段的值是否在数据表中存在
+ * Vérifier si la valeur d'un champ existe dans la table de données
  */
 @ValidatorConstraint({ name: 'entityItemExist', async: true })
 @Injectable()
@@ -27,19 +27,19 @@ export class EntityExistConstraint implements ValidatorConstraintInterface {
 
     if (!value)
       return true
-    // 默认对比字段是id
+    // Le champ de comparaison par défaut est id
     let field = 'id'
-    // 通过传入的 entity 获取其 repository
+    // Obtenir le repository via l'entité transmise
     if ('entity' in args.constraints[0]) {
-      // 传入的是对象 可以指定对比字段
+      // Un objet est transmis, le champ de comparaison peut être spécifié
       field = args.constraints[0].field ?? 'id'
       repo = this.dataSource.getRepository(args.constraints[0].entity)
     }
     else {
-      // 传入的是实体类
+      // Une classe d'entité est transmise
       repo = this.dataSource.getRepository(args.constraints[0])
     }
-    // 通过查询记录是否存在进行验证
+    // Validation par vérification de l'existence de l'enregistrement
     const item = await repo.findOne({ where: { [field]: value } })
     return !!item
   }
@@ -53,8 +53,8 @@ export class EntityExistConstraint implements ValidatorConstraintInterface {
 }
 
 /**
- * 数据存在性验证
- * @param entity Entity类或验证条件对象
+ * Validation de l'existence des données
+ * @param entity Classe Entity ou objet de condition de validation
  * @param validationOptions
  */
 function IsEntityExist(

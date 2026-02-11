@@ -28,12 +28,12 @@ function createAliasProviders(): ExistingProvider[] {
 }
 
 /**
- * 所有需要执行的定时任务都需要在这里注册
+ * Toutes les tâches planifiées à exécuter doivent être enregistrées ici
  */
 @Module({})
 export class TasksModule {
   static forRoot(): DynamicModule {
-    // 使用Alias定义别名，使得可以通过字符串类型获取定义的Service，否则无法获取
+    // Utiliser Alias pour définir des alias, permettant d'obtenir les Services définis par type chaîne, sinon impossible de les obtenir
     const aliasProviders = createAliasProviders()
     return {
       global: true,

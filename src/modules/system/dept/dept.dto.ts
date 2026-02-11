@@ -12,18 +12,18 @@ import {
 } from 'class-validator'
 
 export class DeptDto {
-  @ApiProperty({ description: '部门名称' })
+  @ApiProperty({ description: 'Nom du département' })
   @IsString()
   @MinLength(1)
   name: string
 
-  @ApiProperty({ description: '父级部门id' })
+  @ApiProperty({ description: 'ID du département parent' })
   @Type(() => Number)
   @IsInt()
   @IsOptional()
   parentId: number
 
-  @ApiProperty({ description: '排序编号', required: false })
+  @ApiProperty({ description: 'Numéro d\'ordre de tri', required: false })
   @IsInt()
   @Min(0)
   @IsOptional()
@@ -31,24 +31,24 @@ export class DeptDto {
 }
 
 export class TransferDeptDto {
-  @ApiProperty({ description: '需要转移的管理员列表编号', type: [Number] })
+  @ApiProperty({ description: 'Liste des identifiants des administrateurs à transférer', type: [Number] })
   @IsArray()
   @ArrayNotEmpty()
   userIds: number[]
 
-  @ApiProperty({ description: '需要转移过去的系统部门ID' })
+  @ApiProperty({ description: 'ID du département système de destination' })
   @IsInt()
   @Min(0)
   deptId: number
 }
 
 export class MoveDept {
-  @ApiProperty({ description: '当前部门ID' })
+  @ApiProperty({ description: 'ID du département actuel' })
   @IsInt()
   @Min(0)
   id: number
 
-  @ApiProperty({ description: '移动到指定父级部门的ID' })
+  @ApiProperty({ description: 'ID du département parent de destination' })
   @IsInt()
   @Min(0)
   @IsOptional()
@@ -56,14 +56,14 @@ export class MoveDept {
 }
 
 export class MoveDeptDto {
-  @ApiProperty({ description: '部门列表', type: [MoveDept] })
+  @ApiProperty({ description: 'Liste des départements', type: [MoveDept] })
   @ValidateNested({ each: true })
   @Type(() => MoveDept)
   depts: MoveDept[]
 }
 
 export class DeptQueryDto {
-  @ApiProperty({ description: '部门名称' })
+  @ApiProperty({ description: 'Nom du département' })
   @IsString()
   @IsOptional()
   name?: string

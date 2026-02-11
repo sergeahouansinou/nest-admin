@@ -13,89 +13,89 @@ import {
 import { OperatorDto } from '~/common/dto/operator.dto'
 
 enum MenuType {
-  /** 菜单 */
+  /** Menu */
   MENU = 0,
-  /** 目录 */
+  /** Répertoire */
   MENU_GROUP = 1,
-  /** 权限 */
+  /** Permission */
   PERMISSION = 2,
 }
 
 export class MenuDto extends OperatorDto {
   @ApiProperty({
     description: `
-菜单类型:
-- 0: 菜单
-- 1: 目录
-- 2: 权限   
+Type de menu :
+- 0 : Menu
+- 1 : Répertoire
+- 2 : Permission   
     `,
     enum: MenuType,
   })
   @IsIn([0, 1, 2])
   type: MenuType
 
-  @ApiProperty({ description: '父级菜单' })
+  @ApiProperty({ description: 'Menu parent' })
   @IsOptional()
   parentId: number
 
-  @ApiProperty({ description: '菜单或权限名称' })
+  @ApiProperty({ description: 'Nom du menu ou de la permission' })
   @IsString()
   @MinLength(2)
   name: string
 
-  @ApiProperty({ description: '排序' })
+  @ApiProperty({ description: 'Ordre de tri' })
   @IsInt()
   @Min(0)
   orderNo: number
 
-  @ApiProperty({ description: '前端路由地址' })
+  @ApiProperty({ description: 'Chemin de la route front-end' })
   // @Matches(/^[/]$/)
   @ValidateIf(o => o.type !== MenuType.PERMISSION)
   path: string
 
-  @ApiProperty({ description: '是否外链', default: false })
+  @ApiProperty({ description: 'Lien externe', default: false })
   @ValidateIf(o => o.type !== MenuType.PERMISSION)
   @IsBoolean()
   isExt: boolean
 
-  @ApiProperty({ description: '外链打开方式', default: 1 })
+  @ApiProperty({ description: 'Mode d\'ouverture du lien externe', default: 1 })
   @ValidateIf((o: MenuDto) => o.isExt)
   @IsIn([1, 2])
   extOpenMode: number
 
-  @ApiProperty({ description: '菜单是否显示', default: 1 })
+  @ApiProperty({ description: 'Affichage du menu', default: 1 })
   @ValidateIf((o: MenuDto) => o.type !== MenuType.PERMISSION)
   @IsIn([0, 1])
   show: number
 
-  @ApiProperty({ description: '设置当前路由高亮的菜单项，一般用于详情页' })
+  @ApiProperty({ description: 'Définir l\'élément de menu actif pour la route actuelle, généralement utilisé pour les pages de détail' })
   @ValidateIf((o: MenuDto) => o.type !== MenuType.PERMISSION && o.show === 0)
   @IsString()
   @IsOptional()
   activeMenu?: string
 
-  @ApiProperty({ description: '是否开启页面缓存', default: 1 })
+  @ApiProperty({ description: 'Activer le cache de page', default: 1 })
   @ValidateIf((o: MenuDto) => o.type === 1)
   @IsIn([0, 1])
   keepAlive: number
 
-  @ApiProperty({ description: '状态', default: 1 })
+  @ApiProperty({ description: 'Statut', default: 1 })
   @IsIn([0, 1])
   status: number
 
-  @ApiProperty({ description: '菜单图标' })
+  @ApiProperty({ description: 'Icône du menu' })
   @IsOptional()
   @ValidateIf((o: MenuDto) => o.type !== MenuType.PERMISSION)
   @IsString()
   icon?: string
 
-  @ApiProperty({ description: '对应权限' })
+  @ApiProperty({ description: 'Permission correspondante' })
   @ValidateIf((o: MenuDto) => o.type === MenuType.PERMISSION)
   @IsString()
   @IsOptional()
   permission: string
 
-  @ApiProperty({ description: '菜单路由路径或外链' })
+  @ApiProperty({ description: 'Chemin de route du menu ou lien externe' })
   @ValidateIf((o: MenuDto) => o.type !== MenuType.PERMISSION)
   @IsString()
   @IsOptional()

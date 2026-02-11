@@ -3,66 +3,66 @@ import { ApiProperty } from '@nestjs/swagger'
 export type FileType = 'file' | 'dir'
 
 export class SFileInfo {
-  @ApiProperty({ description: '文件id' })
+  @ApiProperty({ description: 'ID du fichier' })
   id: string
 
-  @ApiProperty({ description: '文件类型', enum: ['file', 'dir'] })
+  @ApiProperty({ description: 'Type de fichier', enum: ['file', 'dir'] })
   type: FileType
 
-  @ApiProperty({ description: '文件名称' })
+  @ApiProperty({ description: 'Nom du fichier' })
   name: string
 
-  @ApiProperty({ description: '存入时间', type: Date })
+  @ApiProperty({ description: 'Date d\'enregistrement', type: Date })
   putTime?: Date
 
-  @ApiProperty({ description: '文件大小, byte单位' })
+  @ApiProperty({ description: 'Taille du fichier, en octets' })
   fsize?: string
 
-  @ApiProperty({ description: '文件的mime-type' })
+  @ApiProperty({ description: 'Type mime du fichier' })
   mimeType?: string
 
-  @ApiProperty({ description: '所属目录' })
+  @ApiProperty({ description: 'Répertoire d\'appartenance' })
   belongTo?: string
 }
 
 export class SFileList {
-  @ApiProperty({ description: '文件列表', type: [SFileInfo] })
+  @ApiProperty({ description: 'Liste des fichiers', type: [SFileInfo] })
   list: SFileInfo[]
 
-  @ApiProperty({ description: '分页标志，空则代表加载完毕' })
+  @ApiProperty({ description: 'Marqueur de pagination, vide signifie chargement terminé' })
   marker?: string
 }
 
 export class UploadToken {
-  @ApiProperty({ description: '上传token' })
+  @ApiProperty({ description: 'Token de téléversement' })
   token: string
 }
 
 export class SFileInfoDetail {
-  @ApiProperty({ description: '文件大小，int64类型，单位为字节（Byte）' })
+  @ApiProperty({ description: 'Taille du fichier, type int64, en octets (Byte)' })
   fsize: number
 
-  @ApiProperty({ description: '文件HASH值' })
+  @ApiProperty({ description: 'Valeur HASH du fichier' })
   hash: string
 
-  @ApiProperty({ description: '文件MIME类型，string类型' })
+  @ApiProperty({ description: 'Type MIME du fichier, type string' })
   mimeType: string
 
   @ApiProperty({
     description:
-      '文件存储类型，2 表示归档存储，1 表示低频存储，0表示普通存储。',
+      'Type de stockage du fichier, 2 représente le stockage d\'archives, 1 le stockage basse fréquence, 0 le stockage standard.',
   })
   type: number
 
-  @ApiProperty({ description: '文件上传时间', type: Date })
+  @ApiProperty({ description: 'Date de téléversement du fichier', type: Date })
   putTime: Date
 
-  @ApiProperty({ description: '文件md5值' })
+  @ApiProperty({ description: 'Valeur md5 du fichier' })
   md5: string
 
-  @ApiProperty({ description: '上传人' })
+  @ApiProperty({ description: 'Auteur du téléversement' })
   uploader: string
 
-  @ApiProperty({ description: '文件备注' })
+  @ApiProperty({ description: 'Remarque du fichier' })
   mark?: string
 }
