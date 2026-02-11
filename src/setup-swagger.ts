@@ -24,16 +24,16 @@ export function setupSwagger(
     .setTitle(name)
     .setDescription(`
 🔷 **Base URL**: \`${serverUrl}/${globalPrefix}\` <br>
-🧾 **Swagger JSON**: [查看文档 JSON](${swaggerPath}/json)
+🧾 **Swagger JSON**: [Voir le JSON de la documentation](${swaggerPath}/json)
 
-📌 [nest-admin](https://github.com/buqiyuan/nest-admin) 后台管理系统 API 文档. 在线 demo [vue3-antdv-admin.pages.dev](https://vue3-antdv-admin.pages.dev/)
+📌 [nest-admin](https://github.com/buqiyuan/nest-admin) Documentation API du système d'administration back-office. Démo en ligne [vue3-antdv-admin.pages.dev](https://vue3-antdv-admin.pages.dev/)
     `)
     .setVersion('1.0')
     .addServer(`${serverUrl}/${globalPrefix}`, 'Base URL')
 
   // auth security
   documentBuilder.addSecurity(API_SECURITY_AUTH, {
-    description: '输入令牌（Enter the token）',
+    description: 'Entrez le jeton (Enter the token)',
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
@@ -46,7 +46,7 @@ export function setupSwagger(
 
   SwaggerModule.setup(path, app, document, {
     swaggerOptions: {
-      persistAuthorization: true, // 保持登录
+      persistAuthorization: true, // Maintenir la connexion
     },
     jsonDocumentUrl: `/${path}/json`,
   })
