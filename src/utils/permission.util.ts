@@ -82,6 +82,7 @@ function filterAsyncRoutes(menus: MenuEntity[], parentRoute: MenuEntity): RouteR
       return
     }
     // Rendu du menu de niveau racine
+    let realRoute: RouteRecordRaw
 
     const genFullPath = (path: string, parentPath) => {
       return uniqueSlash(path.startsWith('/') ? path : `/${parentPath}/${path}`)
