@@ -42,7 +42,7 @@ export function createAuthGateway(options: AuthGatewayOptions): new (...args: an
 
     async authFailed(client: Socket) {
       client.send(
-        this.gatewayMessageFormat(BusinessEvents.AUTH_FAILED, '认证失败'),
+        this.gatewayMessageFormat(BusinessEvents.AUTH_FAILED, 'Échec de l\'authentification'),
       )
       client.disconnect()
     }
@@ -71,8 +71,8 @@ export function createAuthGateway(options: AuthGatewayOptions): new (...args: an
     async handleConnection(client: Socket) {
       const token
         = client.handshake.query.token
-        || client.handshake.headers.authorization
-        || client.handshake.headers.Authorization
+          || client.handshake.headers.authorization
+          || client.handshake.headers.Authorization
       if (!token)
         return this.authFailed(client)
 

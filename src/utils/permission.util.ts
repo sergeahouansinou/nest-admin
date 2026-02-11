@@ -51,7 +51,7 @@ function createRoute(menu: MenuEntity, _isRoot: boolean): RouteRecordRaw {
     }
   }
 
-  // 目录
+  // Répertoire
   if (menu.type === 0) {
     return {
       id: menu.id,
@@ -78,22 +78,21 @@ function filterAsyncRoutes(menus: MenuEntity[], parentRoute: MenuEntity): RouteR
 
   menus.forEach((menu) => {
     if (menu.type === 2 || !menu.status) {
-      // 如果是权限或禁用直接跳过
+      // Si c'est une permission ou désactivé, passer directement
       return
     }
-    // 根级别菜单渲染
-    let realRoute: RouteRecordRaw
+    // Rendu du menu de niveau racine
 
     const genFullPath = (path: string, parentPath) => {
       return uniqueSlash(path.startsWith('/') ? path : `/${parentPath}/${path}`)
     }
 
     if (!parentRoute && !menu.parentId && menu.type === 1) {
-      // 根菜单
+      // Menu racine
       realRoute = createRoute(menu, true)
     }
     else if (!parentRoute && !menu.parentId && menu.type === 0) {
-      // 目录
+      // Répertoire
       const childRoutes = filterAsyncRoutes(menus, menu)
       realRoute = createRoute(menu, true)
       if (childRoutes && childRoutes.length > 0) {
@@ -106,7 +105,7 @@ function filterAsyncRoutes(menus: MenuEntity[], parentRoute: MenuEntity): RouteR
       && parentRoute.id === menu.parentId
       && menu.type === 1
     ) {
-      // 子菜单
+      // Sous-menu
       realRoute = createRoute(menu, false)
     }
     else if (
@@ -114,7 +113,7 @@ function filterAsyncRoutes(menus: MenuEntity[], parentRoute: MenuEntity): RouteR
       && parentRoute.id === menu.parentId
       && menu.type === 0
     ) {
-      // 如果还是目录，继续递归
+      // Si c'est encore un répertoire, continuer la récursion
       const childRoutes = filterAsyncRoutes(menus, menu)
       realRoute = createRoute(menu, false)
       if (childRoutes && childRoutes.length > 0) {
@@ -133,32 +132,32 @@ export function generatorRouters(menus: MenuEntity[]) {
   return filterAsyncRoutes(menus, null)
 }
 
-// 获取所有菜单以及权限
+// Obtenir tous les menus et permissions
 function filterMenuToTable(menus: MenuEntity[], parentMenu) {
   const res = []
   menus.forEach((menu) => {
-    // 根级别菜单渲染
+    // Rendu du menu de niveau racine
     let realMenu
     if (!parentMenu && !menu.parentId && menu.type === 1) {
-      // 根菜单，查找该跟菜单下子菜单，因为可能会包含权限
+      // Menu racine, rechercher les sous-menus de ce menu racine car ils peuvent contenir des permissions
       const childMenu = filterMenuToTable(menus, menu)
       realMenu = { ...menu }
       realMenu.children = childMenu
     }
     else if (!parentMenu && !menu.parentId && menu.type === 0) {
-      // 根目录
+      // Répertoire racine
       const childMenu = filterMenuToTable(menus, menu)
       realMenu = { ...menu }
       realMenu.children = childMenu
     }
     else if (parentMenu && parentMenu.id === menu.parentId && menu.type === 1) {
-      // 子菜单下继续找是否有子菜单
+      // Continuer à chercher s'il y a des sous-menus sous le sous-menu
       const childMenu = filterMenuToTable(menus, menu)
       realMenu = { ...menu }
       realMenu.children = childMenu
     }
     else if (parentMenu && parentMenu.id === menu.parentId && menu.type === 0) {
-      // 如果还是目录，继续递归
+      // Si c'est encore un répertoire, continuer la récursion
       const childMenu = filterMenuToTable(menus, menu)
       realMenu = { ...menu }
       realMenu.children = childMenu
@@ -179,8 +178,8 @@ export function generatorMenu(menu: MenuEntity[]) {
   return filterMenuToTable(menu, null)
 }
 
-/** 检测是否为演示环境, 如果为演示环境，则拒绝该操作 */
+/** Vérifier si c'est un environnement de démonstration, si oui, refuser l'opération */
 export function checkIsDemoMode() {
   if (envBoolean('IS_DEMO'))
-    throw new ForbiddenException('演示模式下不允许操作')
+    throw new ForbiddenException('Opération non autorisée en mode démonstration')
 }

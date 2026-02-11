@@ -40,15 +40,15 @@ async function bootstrap() {
 
   const { port, globalPrefix } = configService.get('app', { infer: true })
 
-  // class-validator 的 DTO 类中注入 nest 容器的依赖 (用于自定义验证器)
+  // Injection des dépendances du conteneur nest dans les classes DTO de class-validator (pour les validateurs personnalisés)
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
-  // 允许跨域
+  // Autoriser les requêtes cross-origin
   app.enableCors({
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // 明确允许方法
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'], // 按需配置允许的请求头
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Méthodes explicitement autorisées
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'], // En-têtes de requête autorisés selon les besoins
   })
 
   app.setGlobalPrefix(globalPrefix)
@@ -65,7 +65,7 @@ async function bootstrap() {
       transform: true,
       whitelist: true,
       transformOptions: { enableImplicitConversion: true },
-      // forbidNonWhitelisted: true, // 禁止 无装饰器验证的数据通过
+      // forbidNonWhitelisted: true, // Interdire le passage de données sans décorateur de validation
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       stopAtFirstError: true,
       exceptionFactory: errors =>

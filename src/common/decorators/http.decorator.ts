@@ -6,7 +6,7 @@ import { createParamDecorator } from '@nestjs/common'
 import { getIp } from '~/utils/ip.util'
 
 /**
- * 快速获取IP
+ * Obtenir rapidement l'IP
  */
 export const Ip = createParamDecorator((_, context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest<FastifyRequest>()
@@ -14,9 +14,9 @@ export const Ip = createParamDecorator((_, context: ExecutionContext) => {
 })
 
 /**
- * 快速获取request path，并不包括url params
+ * Obtenir rapidement le chemin de la requête, sans inclure les paramètres URL
  */
 export const Uri = createParamDecorator((_, context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest<FastifyRequest>()
-  return request.routeOptions?.url;
+  return request.routeOptions?.url
 })

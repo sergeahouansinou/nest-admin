@@ -6,7 +6,7 @@ export const HTTP_IDEMPOTENCE_KEY = Symbol('__idempotence_key__')
 export const HTTP_IDEMPOTENCE_OPTIONS = Symbol('__idempotence_options__')
 
 /**
- * 幂等
+ * Idempotence
  */
 export function Idempotence(options?: IdempotenceOption): MethodDecorator {
   return function (target, key, descriptor: PropertyDescriptor) {

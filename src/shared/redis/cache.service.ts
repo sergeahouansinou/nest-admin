@@ -9,7 +9,7 @@ import { RedisIoAdapterKey } from '~/common/adapters/socket.adapter'
 import { API_CACHE_PREFIX } from '~/constants/cache.constant'
 import { getRedisKey } from '~/utils/redis.util'
 
-// 获取器
+// Accesseur
 export type TCacheKey = string
 export type TCacheResult<T> = Promise<T | undefined>
 

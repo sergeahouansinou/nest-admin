@@ -17,13 +17,13 @@ export abstract class BaseGateway {
 
   handleDisconnect(client: Socket) {
     client.send(
-      this.gatewayMessageFormat(BusinessEvents.GATEWAY_CONNECT, 'WebSocket 断开'),
+      this.gatewayMessageFormat(BusinessEvents.GATEWAY_CONNECT, 'WebSocket déconnecté'),
     )
   }
 
   handleConnect(client: Socket) {
     client.send(
-      this.gatewayMessageFormat(BusinessEvents.GATEWAY_CONNECT, 'WebSocket 已连接'),
+      this.gatewayMessageFormat(BusinessEvents.GATEWAY_CONNECT, 'WebSocket connecté'),
     )
   }
 }

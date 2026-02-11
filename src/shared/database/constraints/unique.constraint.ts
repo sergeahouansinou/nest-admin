@@ -12,14 +12,14 @@ import { DataSource, Not, ObjectType } from 'typeorm'
 
 interface Condition {
   entity: ObjectType<any>
-  /** 如果没有指定字段则使用当前验证的属性作为查询依据 */
+  /** Si aucun champ n'est spécifié, utiliser la propriété en cours de validation comme critère de recherche */
   field?: string
-  /** 验证失败的错误信息 */
+  /** Message d'erreur en cas d'échec de la validation */
   message?: string
 }
 
 /**
- * 验证某个字段的唯一性
+ * Vérification de l'unicité d'un champ
  */
 @ValidatorConstraint({ name: 'entityItemUnique', async: true })
 @Injectable()
@@ -27,7 +27,7 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
   constructor(private dataSource: DataSource, private readonly cls: ClsService) {}
 
   async validate(value: any, args: ValidationArguments) {
-    // 获取要验证的模型和字段
+    // Obtenir le modèle et le champ à valider
     const config: Omit<Condition, 'entity'> = {
       field: args.property,
     }
@@ -43,20 +43,20 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
       return false
 
     try {
-      // 查询是否存在数据,如果已经存在则验证失败
+      // Vérifier si les données existent déjà, si oui la validation échoue
       const repo = this.dataSource.getRepository(condition.entity)
 
-      // 如果没有传自定义的错误信息，则尝试获取该字段的 comment 作为信息提示
+      // Si aucun message d'erreur personnalisé n'est fourni, essayer d'obtenir le commentaire du champ comme indication
       if (!condition.message) {
         const targetColumn = repo.metadata.columns.find(n => n.propertyName === condition.field)
         if (targetColumn?.comment) {
-          args.constraints[0].message = `已存在相同的${targetColumn.comment}`
+          args.constraints[0].message = `Un(e) ${targetColumn.comment} identique existe déjà`
         }
       }
 
       let andWhere = {}
       const operateId = this.cls.get('operateId')
-      // 如果是编辑操作，则排除自身
+      // Si c'est une opération de modification, exclure l'élément lui-même
       if (Number.isInteger(operateId)) {
         andWhere = { id: Not(operateId) }
       }
@@ -68,7 +68,7 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
       )
     }
     catch (err) {
-      // 如果数据库操作异常则验证失败
+      // Si une exception de base de données se produit, la validation échoue
       return false
     }
   }
@@ -92,8 +92,8 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
 }
 
 /**
- * 数据唯一性验证
- * @param entity Entity类或验证条件对象
+ * Validation de l'unicité des données
+ * @param entity Classe Entity ou objet de condition de validation
  * @param validationOptions
  */
 function IsUnique(

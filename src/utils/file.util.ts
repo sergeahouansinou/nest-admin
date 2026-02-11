@@ -6,11 +6,11 @@ import { MultipartFile } from '@fastify/multipart'
 import dayjs from 'dayjs'
 
 enum Type {
-  IMAGE = '图片',
-  TXT = '文档',
-  MUSIC = '音乐',
-  VIDEO = '视频',
-  OTHER = '其他',
+  IMAGE = 'Image',
+  TXT = 'Document',
+  MUSIC = 'Musique',
+  VIDEO = 'Vidéo',
+  OTHER = 'Autre',
 }
 
 export function getFileType(extName: string) {
@@ -72,11 +72,11 @@ export function getFilePath(name: string, currentDate: string, type: string) {
 export async function saveLocalFile(buffer: Buffer, name: string, currentDate: string, type: string) {
   const filePath = path.join(__dirname, '../../', 'public/upload/', `${currentDate}/`, `${type}/`)
   try {
-    // 判断是否有该文件夹
+    // Vérifier si le dossier existe
     await fs.promises.stat(filePath)
   }
   catch (error) {
-    // 没有该文件夹就创建
+    // Créer le dossier s'il n'existe pas
     await fs.promises.mkdir(filePath, { recursive: true })
   }
   const writeStream = fs.createWriteStream(filePath + name)

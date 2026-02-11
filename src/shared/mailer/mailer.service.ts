@@ -1,6 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common'
-
 import { MailerService as NestMailerService } from '@nestjs-modules/mailer'
+
+import { Inject, Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
 
 import Redis from 'ioredis'
@@ -57,17 +57,17 @@ export class MailerService {
   async checkLimit(to, ip) {
     const LIMIT_TIME = 5
 
-    // ip限制
+    // Limite IP
     const ipLimit = await this.redis.get(`ip:${ip}:send:limit`)
     if (ipLimit)
       throw new BusinessException(ErrorEnum.TOO_MANY_REQUESTS)
 
-    // 1分钟最多接收1条
+    // Maximum 1 message par minute
     const limit = await this.redis.get(`captcha:${to}:limit`)
     if (limit)
       throw new BusinessException(ErrorEnum.TOO_MANY_REQUESTS)
 
-    // 1天一个邮箱最多接收5条
+    // Maximum 5 messages par jour par adresse e-mail
     let limitCountOfDay: string | number = await this.redis.get(
       `captcha:${to}:limit-day`,
     )
@@ -78,7 +78,7 @@ export class MailerService {
       )
     }
 
-    // 1天一个ip最多发送5条
+    // Maximum 5 messages par jour par IP
     let ipLimitCountOfDay: string | number = await this.redis.get(
       `ip:${ip}:send:limit-day`,
     )
@@ -113,7 +113,7 @@ export class MailerService {
   }
 
   async sendVerificationCode(to, code = randomValue(4, '1234567890')) {
-    const subject = `[${this.appConfig.name}] 验证码`
+    const subject = `[${this.appConfig.name}] Code de vérification`
 
     try {
       await this.mailerService.sendMail({
