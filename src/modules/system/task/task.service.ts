@@ -56,14 +56,14 @@ export class TaskService implements OnModuleInit {
    */
   async initTask(): Promise<void> {
     const initKey = `${SYS_TASK_QUEUE_PREFIX}:init`
-    // Empêcher la réinitialisation
+    // Empêcher la double initialisation
     const result = await this.redis
       .multi()
       .setnx(initKey, new Date().getTime())
       .expire(initKey, 60 * 30)
       .exec()
     if (result[0][1] === 0) {
-      // Un verrou existe, ignorer pour éviter la réinitialisation
+      // Un verrou existe, ignorer pour éviter la double initialisation
       this.logger.log('Init task is lock', TaskService.name)
       return
     }
